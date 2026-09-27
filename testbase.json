@@ -1,0 +1,102 @@
+[
+    {
+        "Question_ID":"QID_0001",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An Islamic commercial bank is establishing a new Shari'ah governance structure. The Board of Directors suggests appointing two senior Fiqh scholars as the core Shari'ah Supervisory Board (SSB) to ensure agility in decision-making. According to AAOIFI GS 19, which of the following statements is correct regarding this composition?",
+        "A":"The setup is fully compliant, provided both appointed scholars possess at least 15 years of practical experience in Fiqh Al-Muamalat.",
+        "B":"The setup is non-compliant because the SSB must consist of at least three Shari'ah scholars specialised in Fiqh Al-Muamalat.",
+        "C":"The setup is compliant if the bank additionally appoints a senior financial market advisor to assist the board with technical matters.",
+        "D":"The setup is non-compliant unless it receives prior written approval from the shareholders during an Extraordinary General Meeting (EGM).",
+        "True answer":"The setup is non-compliant because the SSB must consist of at least three Shari'ah scholars specialised in Fiqh Al-Muamalat."
+    },
+    {
+        "Question_ID":"QID_0002",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An Islamic financial institution (IFI) wants to appoint a Fintech specialist who holds a master's degree in Computer Science but has no formal degree in Islamic jurisprudence. The management wants to assign this specialist as an SSB advisor. Under GS 19, how is this proposed appointment evaluated?",
+        "A":"Invalid, because all members and advisors serving the SSB are required to hold a formal master's degree in Islamic jurisprudence or Fiqh.",
+        "B":"Valid, provided the Fintech specialist is granted full voting rights on all board resolutions concerning digital financial products.",
+        "C":"Valid, provided the individual is a Muslim, a recognized expert in their field, and possesses a basic understanding of Shari'ah principles.",
+        "D":"Invalid, because GS 19 strictly prohibits individuals without a finance or legal background from serving as advisors in any capacity.",
+        "True answer":"Valid, provided the individual is a Muslim, a recognized expert in their field, and possesses a basic understanding of Shari'ah principles."
+    },
+    {
+        "Question_ID":"QID_0003",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"The Board of Directors (acting as Those Charged with Governance - TCWG) of an Islamic Bank directly signs an executive resolution to appoint three SSB members and fix their compensation packages without presenting it to shareholders. According to GS 19, what is the status of this procedure?",
+        "A":"Fully valid, because TCWG holds full executive mandate to execute corporate governance appointments without shareholder intervention.",
+        "B":"Valid, provided the Regulatory and Supervisory Authority issues a formal post-facto ratification letter within 30 days of appointment.",
+        "C":"Invalid, because only the Regulatory and Supervisory Authority (RSA) possesses the legal power to select and appoint SSB scholars.",
+        "D":"Invalid, because SSB members must be approved by shareholders in their general meeting upon the recommendation of TCWG.",
+        "True answer":"Invalid, because SSB members must be approved by shareholders in their general meeting upon the recommendation of TCWG."
+    },
+    {
+        "Question_ID":"QID_0004",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An Islamic bank experiences an emergency where all previous SSB members resign simultaneously. The bank fails to appoint a new SSB within the timeframe mandated by the local banking authority. According to AAOIFI GS 19, what action may the Regulatory and Supervisory Authority (RSA) take?",
+        "A":"Revoke the operating license of the Islamic bank immediately and initiate compulsory liquidation proceedings.",
+        "B":"Order the automatic conversion of the institution into a conventional commercial bank with immediate effect.",
+        "C":"Appoint a temporary SSB at its discretion, with all associated costs borne directly by the institution.",
+        "D":"Require the Chief Risk Officer and Internal Shari'ah Auditor to jointly assume all duties of the SSB temporarily.",
+        "True answer":"Appoint a temporary SSB at its discretion, with all associated costs borne directly by the institution."
+    },
+    {
+        "Question_ID":"QID_0005",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An Islamic window of an international bank intends to draft engagement contracts for its newly selected SSB members. What are the contractual term duration requirements specified in AAOIFI GS 19?",
+        "A":"Indefinite term contracts to guarantee complete operational independence from executive management influence.",
+        "B":"One-year renewable performance contracts subject to annual evaluation by the Board Audit Committee.",
+        "C":"Contracts for service with a minimum term of three years and a maximum term of five years.",
+        "D":"Ten-year non-renewable fixed terms to ensure long-term stability in Shari'ah governance oversight.",
+        "True answer":"Contracts for service with a minimum term of three years and a maximum term of five years."
+    },
+    {
+        "Question_ID":"QID_0006",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"To assess the \"Fit and Proper\" criteria for appointing a Shari'ah scholar to the SSB, an institution reviews several candidates. Which candidate's profile meets the minimum requirements established under AAOIFI GS 19?",
+        "A":"Candidate A: Holds a Master's degree in Fiqh, has 12 years of experience in Fiqh Al-Muamalat, and is fluent in Arabic and local business language.",
+        "B":"Candidate B: Holds a Bachelor's degree in Economics and possesses 2 years of operational experience in Islamic banking window operations.",
+        "C":"Candidate C: A non-Muslim legal scholar with 20 years of research experience in Middle Eastern commercial law frameworks.",
+        "D":"Candidate D: A Shari'ah scholar holding a Ph.D. who publicly advocates opinions directly contradicting established scholarly consensus (Ijma).",
+        "True answer":"Candidate A: Holds a Master's degree in Fiqh, has 12 years of experience in Fiqh Al-Muamalat, and is fluent in Arabic and local business language."
+    },
+    {
+        "Question_ID":"QID_0007",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An SSB scholar missed all scheduled quarterly meetings of an Islamic bank during the financial year without providing any valid reason or reasonable excuse. According to AAOIFI GS 19, what governance consequence applies?",
+        "A":"The scholar's annual fee is automatically reduced by 50%, but membership on the board remains active.",
+        "B":"The scholar becomes subject to potential disqualification for unexcused meeting absenteeism.",
+        "C":"The CEO gains unilateral authority to issue a formal reprimand and extend the term of appointment.",
+        "D":"No formal disciplinary consequence applies as long as the scholar signs the annual Shari'ah report at year-end.",
+        "True answer":"The scholar becomes subject to potential disqualification for unexcused meeting absenteeism."
+    },
+    {
+        "Question_ID":"QID_0008",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"Which of the following describes the hierarchy of \"Shari'ah principles and rules\" defined under AAOIFI GS 19 when assessing compliance or resolving ambiguities?",
+        "A":"Central Bank regulations > Local custom (Urf) > AAOIFI Shari'ah Standards > Internal SSB rulings.",
+        "B":"Management executive resolutions > Internal SSB rulings > AAOIFI Standards > International Financial Reporting Standards.",
+        "C":"AAOIFI Shari'ah Standards > Regulatory requirements > Central Board rulings > AAOIFI FAS > Institution SSB rulings.",
+        "D":"Internal SSB rulings of the institution always override national regulatory Shari'ah board rulings without exception.",
+        "True answer":"AAOIFI Shari'ah Standards > Regulatory requirements > Central Board rulings > AAOIFI FAS > Institution SSB rulings."
+    },
+    {
+        "Question_ID":"QID_0009",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"An IFI aims to ensure diversity in its SSB composition to enhance governance quality. According to AAOIFI GS 19, which elements should preferably be reflected in the SSB composition?\n\ni. Representation from different legal schools of thought (Madhahib) in the country.\nii. Representation of different fields of technical expertise relevant to Islamic finance.\niii. Inclusion of both senior and junior scholars.",
+        "A":"i only",
+        "B":"i and ii only",
+        "C":"ii and iii only",
+        "D":"i, ii, and iii",
+        "True answer":"i, ii, and iii"
+    },
+    {
+        "Question_ID":"QID_0010",
+        "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
+        "Question":"Under AAOIFI GS 19, which of the following actions constitutes a valid ground for the disqualification of an active SSB member?",
+        "A":"The member expresses a dissenting opinion during an internal meeting regarding a proposed Sukuk structure.",
+        "B":"The member misuses confidential client information for personal benefit or to harm the bank's competitive standing.",
+        "C":"The member publishes an academic journal article analyzing classical jurisprudence views on modern derivatives.",
+        "D":"The member advises executive management to increase the bank's annual allocation to charitable endowment funds.",
+        "True answer":"The member misuses confidential client information for personal benefit or to harm the bank's competitive standing."
+    }
+]
