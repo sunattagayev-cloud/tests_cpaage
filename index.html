@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Assessment Platform</title>
+    <meta name="google" content="notranslate" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* --- RANG PALITRASI --- */
+        :root {
+            /* Dark Mode (Default) */
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6; 
+            --accent-hover: #2563eb;
+            --border: #475569;
+            --success: #22c55e;
+            --error: #ef4444;
+            --radius: 12px;
+        }
+
+        [data-theme="light"] {
+            /* Light Mode */
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-input: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --error: #dc2626;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        body { 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px;
+            top: 0 !important; position: static !important; /* Google Translate fix */
+        }
+
+        /* --- CONTROL BAR (HEADER) --- */
+        .control-bar {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .bar-left { display: flex; align-items: center; gap: 15px; }
+        .bar-right { display: flex; align-items: center; gap: 10px; }
+
+        .icon-btn {
+            background: var(--bg-input);
+            color: var(--text-main);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; border: 1px solid var(--border); font-size: 1.1rem;
+        }
+        .icon-btn:hover { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-2px); }
+
+        /* --- GOOGLE TRANSLATE STYLING --- */
+        .goog-te-banner-frame { display: none !important; }
+        .goog-tooltip { display: none !important; }
+        .goog-te-gadget-icon { display: none !important; }
+        .goog-te-gadget-simple {
+            background-color: var(--bg-input) !important;
+            border: 1px solid var(--border) !important;
+            padding: 6px 10px !important;
+            border-radius: 8px !important;
+            font-size: 0.9rem !important;
+            line-height: normal !important;
+            display: inline-block !important;
+            cursor: pointer;
+        }
+        .goog-te-menu-value span { color: var(--text-main) !important; font-weight: 500 !important; border-left: none !important; }
+        .goog-te-menu-value span:last-child { display: none; } /* Hide arrow */
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            width: 100%; max-width: 900px;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+            border: 1px solid var(--border);
+            position: relative;
+            min-height: 450px;
+        }
+
+        h1, h2, h3 { text-align: center; color: var(--accent); margin-bottom: 20px; font-weight: 700; }
+        h1 i { margin-right: 10px; }
+
+        /* FORM ELEMENTS */
+        label { margin-bottom: 8px; display: block; color: var(--text-muted); font-weight: 600; font-size: 0.95rem; }
+        label i { margin-right: 5px; color: var(--accent); }
+
+        input[type="text"], input[type="number"], select.filter-select {
+            width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 10px;
+            border: 2px solid var(--border); background: var(--bg-input); 
+            color: var(--text-main); font-size: 1rem; outline: none;
+        }
+        input:focus { border-color: var(--accent); background: var(--bg-card); }
+
+        .btn {
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            background: var(--accent); color: white; font-weight: bold; font-size: 1rem;
+            cursor: pointer; margin-top: 10px; letter-spacing: 0.5px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); box-shadow: none; }
+        .btn-outline:hover { background: var(--accent); color: white; }
+
+        /* THEME SELECTOR */
+        .theme-box {
+            max-height: 250px; overflow-y: auto; 
+            background: var(--bg-input); border: 1px solid var(--border); 
+            border-radius: 12px; padding: 10px; margin-bottom: 20px;
+        }
+        .theme-row {
+            display: flex; align-items: center; padding: 10px; 
+            border-bottom: 1px solid var(--border); cursor: pointer; border-radius: 8px;
+        }
+        .theme-row:hover { background: var(--bg-card); }
+        .theme-row:last-child { border-bottom: none; }
+        .theme-check { width: 18px; height: 18px; margin-right: 12px; accent-color: var(--accent); cursor: pointer; }
+        .badge-count { background: var(--border); padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-left: auto;}
+
+        /* QUIZ UI */
+        .quiz-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;
+        }
+        .timer-badge {
+            background: rgba(59, 130, 246, 0.15); color: var(--accent);
+            padding: 6px 0; width: 100px; text-align: center;
+            border-radius: 20px; font-family: monospace; font-size: 1.4rem; font-weight: bold; letter-spacing: 1px;
+        }
+        
+        .question-text { font-size: 1.3rem; line-height: 1.6; margin-bottom: 30px; font-weight: 500; }
+        .question-text br { display: block; margin-bottom: 8px; content: ""; }
+
+        .option-item {
+            background: var(--bg-input); border: 2px solid var(--border);
+            padding: 16px 20px; border-radius: 14px; cursor: pointer; margin-bottom: 12px;
+            display: flex; gap: 15px; align-items: center; font-size: 1.05rem;
+        }
+        .option-item:hover { border-color: var(--accent); background: var(--bg-card); transform: translateX(5px); }
+        .option-key { 
+            background: var(--border); width: 32px; height: 32px; display: flex; 
+            align-items: center; justify-content: center; border-radius: 8px; 
+            font-weight: bold; flex-shrink: 0; color: var(--text-muted);
+        }
+
+        /* RESULT & DASHBOARD */
+        .dash-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body); z-index: 2000; overflow-y: auto; padding: 40px 20px;
+        }
+        .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 16px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 2.5rem; font-weight: bold; color: var(--accent); margin-bottom: 5px; }
+        .dash-close { position:absolute; top:30px; right:30px; font-size:2.5rem; cursor:pointer; color:var(--text-muted); transition: 0.2s;}
+        .dash-close:hover { color: var(--error); transform: scale(1.1); }
+
+        .review-item { 
+            background: var(--bg-input); border: 1px solid var(--border); padding: 15px; 
+            border-radius: 12px; margin-bottom: 15px; border-left: 6px solid;
+        }
+        .correct { border-left-color: var(--success); }
+        .wrong { border-left-color: var(--error); }
+        .ans-label { font-weight: bold; color: var(--text-muted); display: inline-block; width: 120px; }
+
+        /* Tools */
+        .hidden { display: none !important; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .select-all { color: var(--accent); cursor: pointer; font-size: 0.9rem; font-weight: 600; text-decoration: underline; }
+        
+        .loader { border: 4px solid var(--border); border-top: 4px solid var(--accent); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 50px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper" style="width:100%; max-width:900px;">
+        
+        <!-- HEADER CONTROL PANEL -->
+        <div class="control-bar">
+            <div class="bar-left">
+                <div id="google_translate_element"></div>
+            </div>
+
+            <div class="bar-right">
+                <button class="icon-btn" onclick="showDashboard()" title="History Dashboard">
+                    <i class="fas fa-chart-line"></i>
+                </button>
+                <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- 1. LOADING SCREEN -->
+            <div id="loading-screen">
+                <div class="loader"></div>
+                <p style="text-align:center; color:var(--text-muted);">Loading Database...</p>
+            </div>
+
+            <!-- 2. START SCREEN -->
+            <div id="start-screen" class="hidden">
+                <h1><i class="fas fa-laptop-code"></i> Online Test Platform</h1>
+                
+                <label><i class="fas fa-user"></i> Full Name:</label>
+                <input type="text" id="username" placeholder="Enter your full name" required>
+
+                <div class="flex-between">
+                    <label style="margin:0"><i class="fas fa-layer-group"></i> Select Topic (Min 1):</label>
+                    <span class="select-all" onclick="toggleAllThemes()">Select All</span>
+                </div>
+                <div class="theme-box" id="theme-list"></div>
+
+                <label><i class="fas fa-list-ol"></i> Number of Questions (Max: <span id="dyn-total" class="notranslate">0</span>):</label>
+                <input type="number" id="q-count" value="10" min="5">
+
+                <button class="btn" id="start-btn" onclick="initiateSession()">
+                    <i class="fas fa-play"></i> START TEST
+                </button>
+                <p id="start-msg" style="text-align:center; color:var(--accent); display:none; margin-top:15px; font-size:0.9rem;">
+                    <i class="fas fa-circle-notch fa-spin"></i> Initializing Session...
+                </p>
+            </div>
+
+            <!-- 3. QUIZ SCREEN -->
+            <div id="quiz-screen" class="hidden">
+                <div class="quiz-header">
+                    <div>
+                        <i class="fas fa-user-circle" style="color:var(--accent); margin-right:5px;"></i>
+                        <span id="d-name" class="notranslate" style="font-weight:600">User</span>
+                    </div>
+                    <!-- Clock -->
+                    <div class="timer-badge notranslate" id="timer">00:00</div>
+                </div>
+                
+                <div class="flex-between" style="margin-bottom:15px;">
+                    <span id="q-theme" style="color:var(--accent); font-weight:bold; font-size:0.9rem;">Topic Name</span>
+                    <span class="notranslate" style="font-weight:bold; color:var(--text-muted);">
+                        <i class="fas fa-question-circle"></i> <span id="q-idx">1</span>/<span id="q-total">20</span>
+                    </span>
+                </div>
+
+                <div id="q-text" class="question-text">Loading question...</div>
+                <div id="options-area"></div>
+            </div>
+
+            <!-- 4. RESULT SCREEN -->
+            <div id="result-screen" class="hidden" style="text-align:center;">
+                <h2>Assessment Complete!</h2>
+                
+                <div style="width:150px; height:150px; border-radius:50%; border:8px solid var(--border); margin:0 auto 20px; display:flex; flex-direction:column; align-items:center; justify-content:center;" id="score-circle">
+                    <span id="final-score" class="notranslate" style="font-size:3rem; font-weight:bold; color:var(--text-main);">0%</span>
+                    <span style="font-size:0.8rem; color:var(--text-muted); text-transform: uppercase;">Score</span>
+                </div>
+                
+                <p style="color:var(--success); font-weight:600; margin-bottom:25px;">
+                    <i class="fas fa-cloud-upload-alt"></i> Results saved to database
+                </p>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:30px;">
+                    <button class="btn" style="margin:0" onclick="location.reload()"><i class="fas fa-redo"></i> Retake Test</button>
+                    <button class="btn btn-outline" style="margin:0" onclick="showDashboard()"><i class="fas fa-chart-bar"></i> View Analytics</button>
+                </div>
+
+                <h3 style="border-top:1px solid var(--border); padding-top:25px; text-align:left; font-size:1.2rem;">
+                    <i class="fas fa-check-double"></i> Review Answers
+                </h3>
+                <div id="current-review-area" class="review-box" style="text-align:left; margin-top:15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD OVERLAY -->
+    <div id="dashboard-overlay" class="dash-overlay hidden">
+        <span class="dash-close" onclick="closeDashboard()">&times;</span>
+        
+        <div style="max-width:1000px; margin:0 auto;">
+            <div class="flex-between" style="flex-wrap:wrap; gap:15px; margin-bottom:30px;">
+                <h2 style="margin:0;"><i class="fas fa-history"></i> Historical Analysis</h2>
+                <!-- Filter -->
+                <div>
+                    <select id="user-filter" class="filter-select" onchange="filterDashboard()" style="width:250px; margin:0; padding:10px;">
+                        <option value="all">All Users</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="dash-loader" class="loader hidden"></div>
+            
+            <div id="dash-data" class="hidden">
+                <div class="dash-grid">
+                    <div class="stat-card">
+                        <div class="stat-val notranslate" id="total-tests">0</div>
+                        <div style="color:var(--text-muted)">Total Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val notranslate" id="avg-score">0%</div>
+                        <div style="color:var(--text-muted)">Avg Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val notranslate" id="total-questions">0</div>
+                        <div style="color:var(--text-muted)">Questions Answered</div>
+                    </div>
+                </div>
+
+                <!-- Graphic -->
+                <div style="background:var(--bg-card); padding:20px; border-radius:16px; margin-bottom:20px; border:1px solid var(--border);">
+                    <h3 style="text-align:left; font-size:1.1rem; margin-bottom:15px;">Score Progress</h3>
+                    <div style="height:300px;"><canvas id="scoreChart"></canvas></div>
+                </div>
+
+                <!-- Topics -->
+                <div style="background:var(--bg-card); padding:20px; border-radius:16px; border:1px solid var(--border);">
+                    <h3 style="text-align:left; font-size:1.1rem; margin-bottom:15px;">Topic Performance</h3>
+                    <div id="topic-progress-area"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en', 
+                includedLanguages: 'en,ru,uz', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE, 
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        const API_URL = "https://script.google.com/macros/s/AKfycbx1bcKY6-DMyzbyJbqiA4iLCrkQZwvaIv9_t-D2TTzJwMjTikKZCPC7UM3HKVm3G6mr/exec";
+        const DB_URL = "https://raw.githubusercontent.com/sunattagayev-cloud/Testlar/refs/heads/main/testbase.json";
+
+        let allData = [], themesMap = {}, quizSet = [];
+        let currentIdx = 0, timerInt, timeLeft, questionStart;
+        let userData = { name: '', count: 0, testID: null };
+        let userResponses = []; 
+        let rawDashboardData = []; 
+
+        window.onload = async () => {
+            try {
+                let res = await fetch(DB_URL);
+                processDB(JSON.parse(await res.text()));
+            } catch(e) { document.getElementById('loading-screen').innerHTML = "<p style='color:var(--error); text-align:center'>Network Error.</p>"; }
+        };
+
+        function processDB(data) {
+            allData = data;
+            themesMap = {};
+            data.forEach(q => {
+                let t = q.Theme || "General";
+                if(!themesMap[t]) themesMap[t] = [];
+                themesMap[t].push(q);
+            });
+            renderThemes();
+            document.getElementById('loading-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+
+        function renderThemes() {
+            let html = '';
+            Object.keys(themesMap).sort().forEach(t => {
+                html += `<div class="theme-row">
+                    <input type="checkbox" class="theme-check" value="${t}" onchange="calcTotal()">
+                    <span style="flex:1; margin-left:10px; font-size:0.95rem;">${t}</span>
+                    <span class="badge-count notranslate">${themesMap[t].length}</span>
+                </div>`;
+            });
+            document.getElementById('theme-list').innerHTML = html;
+            calcTotal();
+        }
+
+        function calcTotal() {
+            let total = 0;
+            document.querySelectorAll('.theme-check:checked').forEach(c => total += themesMap[c.value].length);
+            document.getElementById('dyn-total').innerText = total;
+            let inp = document.getElementById('q-count');
+            inp.max = total;
+            if(parseInt(inp.value)>total) inp.value = total;
+        }
+        
+        function toggleAllThemes() {
+            let checks = document.querySelectorAll('.theme-check');
+            let val = !checks[0].checked;
+            checks.forEach(c => c.checked = val);
+            calcTotal();
+        }
+
+        // --- MATNNI FORMATLASH (0.3 -> 30% hamda Raqamli Javoblar) ---
+        function formatOption(txt) {
+            // Javob null yoki bo'sh bo'lsa
+            if (!txt) return "";
+            
+            // Uni stringga aylantirib, bo'shliqlarni olamiz
+            let strTxt = String(txt).trim();
+            
+            // Raqam ekanligini tekshiramiz
+            let n = parseFloat(strTxt);
+            
+            // SHART: Agar bu raqam bo'lsa VA u 0 dan katta, 1 dan kichik bo'lsa (0.3, 0.05 kabi)
+            // VA matn uzunligi 6 dan kam bo'lsa (sana yoki ID emasligiga ishonch hosil qilish uchun)
+            if (!isNaN(n) && n > 0 && n <= 1 && strTxt.length < 6 && String(n) === strTxt) {
+                return (n * 100) + "%";
+            }
+            
+            // Aks holda aslini qaytaramiz (5000, 10000 kabi)
+            return strTxt;
+        }
+
+        async function initiateSession() {
+            let name = document.getElementById('username').value.trim();
+            let count = parseInt(document.getElementById('q-count').value);
+            let checks = document.querySelectorAll('.theme-check:checked');
+            
+            if(!name) return alert("Please enter your name!");
+            // Minimal 1 ta mavzu (Talab bo'yicha)
+            if(checks.length < 1) return alert("Select at least 1 topic!"); 
+            if(count < 5) return alert("Minimum 5 questions required!");
+
+            let pool = [];
+            checks.forEach(c => pool = pool.concat(themesMap[c.value]));
+            if(count > pool.length) return alert("Not enough questions in selected topics.");
+
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('start-msg').style.display = 'block';
+
+            userData.testID = Date.now() + "_" + Math.floor(Math.random()*1000); 
+            userData.name = name;
+            userData.count = count;
+            
+            quizSet = pool.sort(() => 0.5 - Math.random()).slice(0, count);
+            timeLeft = count * 240;
+            currentIdx = 0;
+            userResponses = []; 
+
+            setTimeout(() => {
+                document.getElementById('start-screen').classList.add('hidden');
+                document.getElementById('quiz-screen').classList.remove('hidden');
+                document.getElementById('d-name').innerText = name;
+                
+                startTimer();
+                loadQ(0);
+            }, 1000);
+        }
+
+        function loadQ(idx) {
+            currentIdx = idx;
+            let q = quizSet[idx];
+            document.getElementById('q-theme').innerText = q.Theme;
+            document.getElementById('q-idx').innerText = idx + 1;
+            document.getElementById('q-total').innerText = userData.count;
+            
+            let txt = q.Question.replace(/(\b[i|v|x]+\.)\s/gi, '<br><b class="notranslate">$1</b> ').replace(/\n/g, '<br>');
+            document.getElementById('q-text').innerHTML = txt;
+
+            // CLEAR OPTIONS (Fix overlap issue)
+            const optsArea = document.getElementById('options-area');
+            optsArea.innerHTML = '';
+
+            let opts = [{k:'A',t:q.A}, {k:'B',t:q.B}, {k:'C',t:q.C}, {k:'D',t:q.D}].filter(o=>o.t !== null && o.t !== "");
+            
+            opts.forEach(o => {
+                let div = document.createElement('div');
+                div.className = 'option-item';
+                div.innerHTML = `<span class="option-key notranslate">${o.k}</span> ${formatOption(o.t)}`;
+                // Javob bosilganda (Escaping quote)
+                div.onclick = () => answer(o.t, div);
+                optsArea.appendChild(div);
+            });
+            
+            questionStart = Date.now();
+            
+            // Translate Trigger (DOM yangilangandan keyin)
+            setTimeout(() => {
+                let c = document.querySelector('.goog-te-combo');
+                if(c && c.value !== 'en') { let old = c.value; c.value='en'; c.dispatchEvent(new Event('change')); setTimeout(()=> { c.value=old; c.dispatchEvent(new Event('change')); }, 50); }
+            }, 150);
+        }
+
+        function answer(selText, el) {
+            document.getElementById('options-area').style.pointerEvents = 'none';
+
+            let q = quizSet[currentIdx];
+            // Formatlashdan emas, to'g'ridan to'g'ri String qilib solishtiramiz
+            let correctText = String(q['True answer']).trim();
+            let selectedText = String(selText).trim();
+            
+            let isCorrect = selectedText === correctText;
+            let time = ((Date.now() - questionStart)/1000).toFixed(1);
+
+            // Save Local
+            userResponses.push({
+                question: q.Question,
+                selected: selectedText,
+                correct: correctText,
+                isCorrect: isCorrect,
+                theme: q.Theme
+            });
+
+            // Send to Server
+            saveAnswerImmediately({
+                id: userData.testID, 
+                name: userData.name,
+                theme: q.Theme,
+                question: q.Question,
+                selected: selectedText,
+                correct: correctText,
+                time: time
+            });
+
+            setTimeout(() => {
+                document.getElementById('options-area').style.pointerEvents = 'auto';
+                if(currentIdx+1 < userData.count) loadQ(currentIdx+1);
+                else finish();
+            }, 200); 
+        }
+
+        function saveAnswerImmediately(data) {
+            fetch(API_URL, {
+                method: "POST", mode: "no-cors", 
+                headers: {"Content-Type": "text/plain"},
+                body: JSON.stringify({ action: "save", data: data })
+            }).catch(e => console.log("Save error"));
+        }
+
+        function startTimer() {
+            let el = document.getElementById('timer');
+            timerInterval = setInterval(() => {
+                let m = Math.floor(timeLeft/60), s = timeLeft%60;
+                el.innerText = `${(m<10?'0':'')+m}:${(s<10?'0':'')+s}`;
+                if(timeLeft-- <= 0) { clearInterval(timerInterval); finish(); }
+            }, 1000);
+        }
+
+        function finish() {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let correctCount = userResponses.filter(u => u.isCorrect).length;
+            let percent = Math.round((correctCount / userData.count) * 100);
+            
+            let circle = document.getElementById('final-score');
+            circle.innerText = percent + "%";
+            
+            let color = percent>=80 ? 'var(--success)' : percent>=50 ? '#f59e0b' : 'var(--error)';
+            document.getElementById('score-circle').style.borderColor = color;
+            circle.style.color = color;
+
+            let reviewHTML = '';
+            userResponses.forEach((r, i) => {
+                let cls = r.isCorrect ? 'correct' : 'wrong';
+                reviewHTML += `
+                <div class="review-item ${cls}">
+                    <div style="font-weight:600; margin-bottom:10px;">${i+1}. ${r.question}</div>
+                    <div class="ans-row">
+                        <span class="ans-label">Your Answer:</span>
+                        <span style="color:${r.isCorrect ? 'var(--success)' : 'var(--error)'}; font-weight:bold;">${formatOption(r.selected)}</span>
+                        ${r.isCorrect ? '<i class="fas fa-check" style="color:var(--success); margin-left:5px;"></i>' : '<i class="fas fa-times" style="color:var(--error); margin-left:5px;"></i>'}
+                    </div>
+                    ${!r.isCorrect ? `
+                    <div class="ans-row">
+                        <span class="ans-label">Correct:</span>
+                        <span style="font-weight:bold; color:var(--success)">${formatOption(r.correct)}</span>
+                    </div>` : ''}
+                </div>`;
+            });
+            document.getElementById('current-review-area').innerHTML = reviewHTML;
+        }
+
+        // --- DASHBOARD ---
+        let chartInst = null;
+
+        function showDashboard() {
+            document.getElementById('dashboard-overlay').classList.remove('hidden');
+            if(rawDashboardData.length === 0) fetchDashboardData(); 
+        }
+
+        function closeDashboard() { document.getElementById('dashboard-overlay').classList.add('hidden'); }
+
+        function fetchDashboardData() {
+            document.getElementById('dash-loader').classList.remove('hidden');
+            document.getElementById('dash-data').classList.add('hidden');
+
+            fetch(API_URL)
+                .then(res => res.json())
+                .then(rows => { 
+                    rawDashboardData = rows;
+                    populateNameFilter(rows); 
+                    analyze(rows); 
+                    document.getElementById('dash-loader').classList.add('hidden');
+                    document.getElementById('dash-data').classList.remove('hidden');
+                }).catch(e => alert("Error loading analytics."));
+        }
+
+        function populateNameFilter(rows) {
+            let names = new Set();
+            rows.forEach(r => { if(r[2]) names.add(r[2]); });
+            
+            let select = document.getElementById('user-filter');
+            select.innerHTML = '<option value="all">All Users</option>';
+            Array.from(names).sort().forEach(n => {
+                let opt = document.createElement('option');
+                opt.value = n; opt.innerText = n;
+                select.appendChild(opt);
+            });
+        }
+
+        function filterDashboard() {
+            let selectedName = document.getElementById('user-filter').value;
+            let filteredRows = rawDashboardData;
+            if (selectedName !== "all") {
+                filteredRows = rawDashboardData.filter(r => r[2] === selectedName);
+            }
+            analyze(filteredRows);
+        }
+
+        function analyze(rows) {
+            if(rows.length === 0) {
+                document.getElementById('total-tests').innerText = 0;
+                document.getElementById('avg-score').innerText = "0%";
+                document.getElementById('total-questions').innerText = 0;
+                if(chartInst) chartInst.destroy();
+                document.getElementById('topic-progress-area').innerHTML = "No Data";
+                return;
+            }
+
+            let sessions = {}; 
+            let topicStats = {};
+
+            rows.forEach(r => {
+                let id = r[0]; // ID
+                let theme = r[3]; 
+                let isCorr = String(r[5]).trim() == String(r[6]).trim();
+
+                if(!sessions[id]) sessions[id] = { total:0, correct:0 };
+                sessions[id].total++;
+                if(isCorr) sessions[id].correct++;
+
+                if(!topicStats[theme]) topicStats[theme] = { total:0, correct:0 };
+                topicStats[theme].total++;
+                if(isCorr) topicStats[theme].correct++;
+            });
+
+            let sessionKeys = Object.keys(sessions);
+            document.getElementById('total-tests').innerText = sessionKeys.length;
+            document.getElementById('total-questions').innerText = rows.length;
+
+            let totalPercent = 0;
+            let chartLabels = [], chartData = [];
+
+            sessionKeys.forEach((key, idx) => {
+                let s = sessions[key];
+                let p = Math.round((s.correct/s.total)*100);
+                totalPercent += p;
+                
+                if(sessionKeys.length <= 30 || idx >= sessionKeys.length - 30) {
+                    chartLabels.push("Test " + (idx+1));
+                    chartData.push(p);
+                }
+            });
+
+            document.getElementById('avg-score').innerText = Math.round(totalPercent / sessionKeys.length || 0) + "%";
+
+            let ctx = document.getElementById('scoreChart').getContext('2d');
+            if(chartInst) chartInst.destroy();
+            chartInst = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Score (%)',
+                        data: chartData,
+                        borderColor: '#3b82f6',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                    }]
+                },
+                options: { 
+                    scales: { y: { beginAtZero: true, max: 100 } }, 
+                    responsive:true, maintainAspectRatio:false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            let topicsArr = Object.keys(topicStats).map(t => {
+                return { 
+                    t: t, 
+                    correct: topicStats[t].correct,
+                    total: topicStats[t].total,
+                    p: Math.round((topicStats[t].correct / topicStats[t].total)*100) 
+                };
+            }).sort((a,b) => a.p - b.p);
+
+            let h = '';
+            topicsArr.forEach(item => { 
+                let c = item.p>=80 ? 'var(--success)' : item.p>=50 ? '#f59e0b' : 'var(--error)';
+                h += `<div style="margin-bottom:15px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.95rem; margin-bottom:5px;">
+                        <span>${item.t} <span style="font-size:0.8rem; color:var(--text-muted)">(${item.correct}/${item.total})</span></span>
+                        <span style="font-weight:bold; color:${c}">${item.p}%</span>
+                    </div>
+                    <div style="height:10px; background:var(--bg-input); border-radius:5px; overflow:hidden;">
+                        <div style="height:100%; width:${item.p}%; background:${c}"></div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('topic-progress-area').innerHTML = h;
+        }
+
+        function toggleTheme() {
+            let b = document.body;
+            b.hasAttribute('data-theme') ? b.removeAttribute('data-theme') : b.setAttribute('data-theme', 'light');
+            let icon = document.getElementById('themeIcon');
+            icon.className = b.hasAttribute('data-theme') ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    </script>
+</body>
+</html>
