@@ -2,7 +2,7 @@
     {
         "Question_ID":"QID_0001",
         "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
-        "Question":"An Islamic commercial bank is establishing a new Shari'ah governance structure. The Board of Directors suggests appointing two senior Fiqh scholars as the core Shari'ah Supervisory Board (SSB) to ensure agility in decision-making. According to AAOIFI GS 19, which of the following statements is correct regarding this composition?",
+        "Question":"An Islamic commercial bank is establishing a new Shari'ah governance structure. The Board of Directors suggests appointing two senior Fiqh scholars as the core Shari'ah Supervisory Board (SSto ensure agility in decision-making. According to AAOIFI GS 19, which of the following statements is correct regarding this composition?",
         "A":"The setup is fully compliant, provided both appointed scholars possess at least 15 years of practical experience in Fiqh Al-Muamalat.",
         "B":"The setup is non-compliant because the SSB must consist of at least three Shari'ah scholars specialised in Fiqh Al-Muamalat.",
         "C":"The setup is compliant if the bank additionally appoints a senior financial market advisor to assist the board with technical matters.",
@@ -25,14 +25,14 @@
         "Question":"The Board of Directors (acting as Those Charged with Governance - TCWG) of an Islamic Bank directly signs an executive resolution to appoint three SSB members and fix their compensation packages without presenting it to shareholders. According to GS 19, what is the status of this procedure?",
         "A":"Fully valid, because TCWG holds full executive mandate to execute corporate governance appointments without shareholder intervention.",
         "B":"Valid, provided the Regulatory and Supervisory Authority issues a formal post-facto ratification letter within 30 days of appointment.",
-        "C":"Invalid, because only the Regulatory and Supervisory Authority (RSA) possesses the legal power to select and appoint SSB scholars.",
+        "C":"Invalid, because only the Regulatory and Supervisory Authority (RSpossesses the legal power to select and appoint SSB scholars.",
         "D":"Invalid, because SSB members must be approved by shareholders in their general meeting upon the recommendation of TCWG.",
         "True answer":"Invalid, because SSB members must be approved by shareholders in their general meeting upon the recommendation of TCWG."
     },
     {
         "Question_ID":"QID_0004",
         "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
-        "Question":"An Islamic bank experiences an emergency where all previous SSB members resign simultaneously. The bank fails to appoint a new SSB within the timeframe mandated by the local banking authority. According to AAOIFI GS 19, what action may the Regulatory and Supervisory Authority (RSA) take?",
+        "Question":"An Islamic bank experiences an emergency where all previous SSB members resign simultaneously. The bank fails to appoint a new SSB within the timeframe mandated by the local banking authority. According to AAOIFI GS 19, what action may the Regulatory and Supervisory Authority (RStake?",
         "A":"Revoke the operating license of the Islamic bank immediately and initiate compulsory liquidation proceedings.",
         "B":"Order the automatic conversion of the institution into a conventional commercial bank with immediate effect.",
         "C":"Appoint a temporary SSB at its discretion, with all associated costs borne directly by the institution.",
@@ -82,7 +82,7 @@
     {
         "Question_ID":"QID_0009",
         "Theme":"AAOIFI GS 19: Shari'ah Supervisory Board: Appointment and Composition",
-        "Question":"An IFI aims to ensure diversity in its SSB composition to enhance governance quality. According to AAOIFI GS 19, which elements should preferably be reflected in the SSB composition?\n\ni. Representation from different legal schools of thought (Madhahib) in the country.\nii. Representation of different fields of technical expertise relevant to Islamic finance.\niii. Inclusion of both senior and junior scholars.",
+        "Question":"An IFI aims to ensure diversity in its SSB composition to enhance governance quality. According to AAOIFI GS 19, which elements should preferably be reflected in the SSB composition?\n\ni. Representation from different legal schools of thought (Madhahiin the country.\nii. Representation of different fields of technical expertise relevant to Islamic finance.\niii. Inclusion of both senior and junior scholars.",
         "A":"i only",
         "B":"i and ii only",
         "C":"ii and iii only",
@@ -98,5 +98,255 @@
         "C":"The member publishes an academic journal article analyzing classical jurisprudence views on modern derivatives.",
         "D":"The member advises executive management to increase the bank's annual allocation to charitable endowment funds.",
         "True answer":"The member misuses confidential client information for personal benefit or to harm the bank's competitive standing."
+    },
+    {
+        "Question_ID":"QID_0011",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor is finalising the report of an Islamic financial institution. Management has prepared the financial statements and has also undertaken to operate the institution in accordance with Shari’a Rules and Principles. Which statement should appear in the introductory paragraph?",
+        "A":"Management is responsible for preparing the financial statements, while the auditor is responsible for ensuring Shari’a compliance in all operations.",
+        "B":"Management is responsible for the financial statements and its undertaking to operate in accordance with Shari’a Rules and Principles, while the auditor is responsible for expressing an opinion based on the audit.",
+        "C":"Management is responsible for the financial statements, while the Shari’a Supervisory Board is responsible for expressing an audit opinion based on the auditor’s procedures.",
+        "D":"Management is responsible for the financial statements and accounting policies, while the auditor is responsible for determining whether management has complied with all Shari’a requirements.",
+        "True answer":"Management is responsible for the financial statements and its undertaking to operate in accordance with Shari’a Rules and Principles, while the auditor is responsible for expressing an opinion based on the audit."
+    },
+    {
+        "Question_ID":"QID_0012",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor is drafting the scope paragraph for an Islamic financial institution operating in a country with its own auditing practices. Which description most appropriately reflects the requirements of ASIFI 2?",
+        "A":"The audit was conducted in accordance with AAOIFI accounting standards and relevant national practices, provided that those practices are consistent with the financial institution’s internal policies.",
+        "B":"The audit was conducted in accordance with ASIFIs and relevant national standards or practices, as appropriate, provided that they do not contravene Shari’a Rules and Principles.",
+        "C":"The audit was conducted in accordance with the national auditing standards applicable to the auditor, together with any accounting standards issued by the Shari’a Supervisory Board.",
+        "D":"The audit was conducted in accordance with international auditing standards and relevant national legislation, provided that management considers those standards appropriate for the institution.",
+        "True answer":"The audit was conducted in accordance with ASIFIs and relevant national standards or practices, as appropriate, provided that they do not contravene Shari’a Rules and Principles."
+    },
+    {
+        "Question_ID":"QID_0013",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"During the preparation of the audit report, the auditor is deciding how to describe the work performed. Which statement most appropriately reflects the audit procedures required to be described in the report?",
+        "A":"The audit included reviewing every transaction, verifying every accounting entry, reassessing all management decisions, and confirming every financial statement disclosure.",
+        "B":"The audit included examining significant transactions, approving management estimates, reviewing internal policies, and evaluating the institution’s overall financial performance.",
+        "C":"The audit included confirming all material balances, reviewing every accounting policy, testing all transactions, and assessing the institution’s compliance with statutory requirements.",
+        "D":"The audit included examining evidence on a test basis, assessing accounting principles and significant estimates, and evaluating the overall financial statement presentation.",
+        "True answer":"The audit included examining evidence on a test basis, assessing accounting principles and significant estimates, and evaluating the overall financial statement presentation."
+    },
+    {
+        "Question_ID":"QID_0014",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An Islamic financial institution prepares its financial statements under an identified financial reporting framework. After completing the audit, the auditor concludes that the statements present a true and fair view under that framework. Which opinion should normally be expressed?",
+        "A":"A qualified opinion should be expressed because the auditor must identify every accounting judgement made by management in the report.",
+        "B":"An adverse opinion should be expressed because management remains responsible for the preparation of the financial statements.",
+        "C":"An unqualified opinion should be expressed because the financial statements give a true and fair view under the identified financial reporting framework.",
+        "D":"A disclaimer of opinion should be expressed because an auditor cannot provide assurance regarding management’s accounting estimates and judgements.",
+        "True answer":"An unqualified opinion should be expressed because the financial statements give a true and fair view under the identified financial reporting framework."
+    },
+    {
+        "Question_ID":"QID_0015",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor completes all necessary audit procedures on 20 March. Management signs the financial statements on 24 March. The auditor proposes dating the report 20 March because the audit work was completed on that date. What should the auditor do?",
+        "A":"Date the report 20 March because the audit procedures were completed before management signed the financial statements.",
+        "B":"Date the report 24 March because the auditor should not date the report earlier than the date the financial statements are signed or approved by management.",
+        "C":"Date the report 20 March because the auditor’s reporting responsibility begins when sufficient audit evidence has been obtained.",
+        "D":"Date the report 24 March only if management requests the later date to ensure consistency with the financial reporting period.",
+        "True answer":"Date the report 24 March because the auditor should not date the report earlier than the date the financial statements are signed or approved by management."
+    },
+    {
+        "Question_ID":"QID_0016",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An Islamic financial institution has disclosed a significant uncertainty concerning a legal matter. The uncertainty does not relate to a going concern problem, and its eventual resolution depends on future events. The auditor considers the matter important for users of the financial statements. What may the auditor do?",
+        "A":"Add an emphasis of matter paragraph to draw attention to the uncertainty without modifying the auditor’s opinion.",
+        "B":"Express a qualified opinion because every significant uncertainty requires modification of the auditor’s opinion.",
+        "C":"Express an adverse opinion because the outcome of the uncertainty depends on events occurring after the reporting date.",
+        "D":"Express a disclaimer because the auditor cannot determine the ultimate outcome of the uncertainty at the reporting date.",
+        "True answer":"Add an emphasis of matter paragraph to draw attention to the uncertainty without modifying the auditor’s opinion."
+    },
+    {
+        "Question_ID":"QID_0017",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An Islamic financial institution faces a material going concern problem, and the matter is appropriately disclosed in the financial statements. The auditor considers the matter significant for users of the report. What reporting treatment is specifically contemplated by ASIFI 2?",
+        "A":"The auditor should add an emphasis of matter paragraph to highlight the material going concern problem.",
+        "B":"The auditor should automatically issue an adverse opinion because the institution’s future operations remain uncertain.",
+        "C":"The auditor should automatically issue a disclaimer because the institution may be unable to continue its operations.",
+        "D":"The auditor should issue an unqualified opinion without additional explanation because the matter is already disclosed.",
+        "True answer":"The auditor should add an emphasis of matter paragraph to highlight the material going concern problem."
+    },
+    {
+        "Question_ID":"QID_0018",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor cannot obtain sufficient appropriate audit evidence because a scope limitation affects matters that are so material and pervasive that the auditor cannot form an opinion on the financial statements. Which reporting outcome is appropriate?",
+        "A":"A qualified opinion should be issued because the limitation affects only the auditor’s ability to obtain sufficient evidence.",
+        "B":"An adverse opinion should be issued because the absence of evidence indicates that the financial statements are misleading.",
+        "C":"A disclaimer of opinion should be issued because the limitation prevents the auditor from obtaining sufficient appropriate audit evidence.",
+        "D":"An unqualified opinion with an emphasis of matter paragraph should be issued because the limitation can be explained to users.",
+        "True answer":"A disclaimer of opinion should be issued because the limitation prevents the auditor from obtaining sufficient appropriate audit evidence."
+    },
+    {
+        "Question_ID":"QID_0019",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor disagrees with management over the acceptability of an accounting policy. The resulting effect on the financial statements is material, but it is not sufficiently pervasive to make the financial statements misleading as a whole. Which opinion is appropriate?",
+        "A":"An unqualified opinion should be issued because the disagreement relates only to an accounting policy selected by management.",
+        "B":"A qualified opinion should be issued, expressed as “except for” the effects of the matter to which the qualification relates.",
+        "C":"An adverse opinion should be issued because any material disagreement with management prevents the auditor from expressing an unqualified opinion.",
+        "D":"A disclaimer of opinion should be issued because the auditor cannot determine whether management’s accounting policy is appropriate.",
+        "True answer":"A qualified opinion should be issued, expressed as “except for” the effects of the matter to which the qualification relates."
+    },
+    {
+        "Question_ID":"QID_0020",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor disagrees with management regarding the implementation of Shari’a Rules and Principles as determined by the institution’s Shari’a Board. The matter has a material effect on the financial statements. Which statement best reflects the Standard?",
+        "A":"Such a disagreement is outside the auditor’s reporting responsibilities because Shari’a matters are determined exclusively by the Shari’a Board.",
+        "B":"Such a disagreement may prevent an unqualified opinion and may lead to either a qualified or adverse opinion depending on its effect.",
+        "C":"Such a disagreement automatically requires a disclaimer because the auditor cannot challenge a determination made by the Shari’a Board.",
+        "D":"Such a disagreement requires an emphasis of matter paragraph because Shari’a matters cannot affect the auditor’s opinion on financial statements.",
+        "True answer":"Such a disagreement may prevent an unqualified opinion and may lead to either a qualified or adverse opinion depending on its effect."
+    },
+    {
+        "Question_ID":"QID_0021",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"Management refuses to provide access to certain accounting records. The auditor believes the records are necessary, but reasonable alternative audit procedures allow sufficient appropriate evidence to be obtained. What should the auditor attempt to do before modifying the opinion?",
+        "A":"Issue a qualified opinion immediately because management has restricted access to accounting records during the audit.",
+        "B":"Issue a disclaimer immediately because management-imposed restrictions prevent the auditor from relying on the accounting records.",
+        "C":"Accept management’s restriction and issue an unqualified opinion because the auditor remains responsible only for available evidence.",
+        "D":"Apply reasonable alternative procedures in order to obtain sufficient appropriate audit evidence supporting an unqualified opinion.",
+        "True answer":"Apply reasonable alternative procedures in order to obtain sufficient appropriate audit evidence supporting an unqualified opinion."
+    },
+    {
+        "Question_ID":"QID_0022",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"A proposed audit engagement includes a contractual restriction preventing the auditor from performing a procedure considered necessary. The auditor believes the restriction would require a disclaimer of opinion. What is the normal response under ASIFI 2?",
+        "A":"Accept the engagement and issue a disclaimer because any scope limitation can be addressed through appropriate wording in the final report.",
+        "B":"Accept the engagement and issue a qualified opinion because a disclaimer should only be used after the audit has been completed.",
+        "C":"Normally not accept the engagement as an audit engagement unless acceptance is required by statute and the limitation does not infringe statutory duties.",
+        "D":"Accept the engagement and remove the restricted procedure from the audit plan because management has authority to determine the scope of the engagement.",
+        "True answer":"Normally not accept the engagement as an audit engagement unless acceptance is required by statute and the limitation does not infringe statutory duties."
+    },
+    {
+        "Question_ID":"QID_0023",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor must issue a qualified opinion because of a material scope limitation. Which additional information should the auditor include in the report?",
+        "A":"The report should describe the limitation and indicate the possible adjustments that might have been necessary had the limitation not existed.",
+        "B":"The report should describe the limitation and state that management is solely responsible for any resulting uncertainty in the financial statements.",
+        "C":"The report should omit the limitation and instead refer users to the institution’s internal audit report for further information.",
+        "D":"The report should describe the limitation and automatically state that the financial statements do not give a true and fair view.",
+        "True answer":"The report should describe the limitation and indicate the possible adjustments that might have been necessary had the limitation not existed."
+    },
+    {
+        "Question_ID":"QID_0024",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An Islamic financial institution applies an accounting policy that the auditor considers inappropriate. The resulting effect is material and pervasive, and the auditor concludes that a qualification would not adequately describe the misleading or incomplete nature of the financial statements. Which opinion should be expressed?",
+        "A":"A qualified opinion should be expressed because the disagreement concerns an accounting policy applied by management.",
+        "B":"An emphasis of matter paragraph should be added because the accounting policy is already disclosed in the financial statements.",
+        "C":"An adverse opinion should be expressed because the effect of the disagreement is so material and pervasive that qualification is inadequate.",
+        "D":"A disclaimer of opinion should be expressed because the auditor cannot accept responsibility for management’s choice of accounting policy.",
+        "True answer":"An adverse opinion should be expressed because the effect of the disagreement is so material and pervasive that qualification is inadequate."
+    },
+    {
+        "Question_ID":"QID_0025",
+        "Theme":"AAOIFI Auditing Standard No. 02: Auditor’s Report",
+        "Question":"An auditor issues an opinion other than an unqualified opinion because of a material matter affecting the financial statements. Which reporting requirement applies to the auditor?",
+        "A":"The auditor should identify the matter briefly but is not normally required to explain its possible financial effect on the financial statements.",
+        "B":"The auditor should provide a clear description of the substantive reasons and, unless impracticable, quantify the possible effects on the financial statements.",
+        "C":"The auditor should provide only a reference to the relevant financial statement note because users can obtain the remaining information from management.",
+        "D":"The auditor should describe the matter in detail only when issuing an adverse opinion, while qualified opinions require only the modified opinion wording.",
+        "True answer":"The auditor should provide a clear description of the substantive reasons and, unless impracticable, quantify the possible effects on the financial statements."
+    },
+    {
+        "Question_ID":"QID_0026",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"Senior management of an Islamic financial institution (IF) undertakes the evaluation of the Shari'ah Supervisory Board and submits the results to the Board of Directors for consideration. Under the Shari'ah Governance Framework, how should this arrangement be evaluated?",
+        "A":"It constitutes a breach because the evaluation of the Shari'ah Supervisory Board is the responsibility of those charged with governance.",
+        "B":"It is acceptable if the Board of Directors reviews and approves the evaluation.",
+        "C":"It is acceptable if the Shari'ah Supervisory Board gives a consent to their evaluation process.",
+        "D":"It constitutes a breach because the Shari'ah Supervisory Board should not be subject to any form of evaluation.",
+        "True answer":"It constitutes a breach because the evaluation of the Shari'ah Supervisory Board is the responsibility of those charged with governance."
+    },
+    {
+        "Question_ID":"QID_0027",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"An Islamic financial institution that is not classified as a public interest entity establishes an internal Shari'ah audit function but does not appoint an external Shari'ah auditor. Under the Shari'ah governance framework, how should this arrangement be evaluated?",
+        "A":"It is not permissible because external Shari'ah audit is mandatory for all Islamic financial institutions.",
+        "B":"It is permissible as external Shari'ah audit is recommended but not mandatory for institutions that are not public interest entities.",
+        "C":"It is not permissible because internal Shari'ah audit cannot provide reliable assurance.",
+        "D":"It is permissible only with specific approval from the regulatory authority.",
+        "True answer":"It is permissible as external Shari'ah audit is recommended but not mandatory for institutions that are not public interest entities."
+    },
+    {
+        "Question_ID":"QID_0028",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"An Islamic financial institution encounters a difference between a ruling issued by its Shari'ah Supervisory Board and Shari'ah guidelines issued by the relevant regulatory authority. No specific AAOIFI Shari'ah standard addresses the matter. According to the hierarchy of Shari'ah rules, how should this matter be resolved?",
+        "A":"The institution should comply with the regulatory authority's Shari'ah guidelines.",
+        "B":"The institution should follow the ruling of its Shari'ah Supervisory Board.",
+        "C":"The institution may adopt either position based on commercial considerations.",
+        "D":"The institution should defer the matter until a relevant standard is issued.",
+        "True answer":"The institution should comply with the regulatory authority's Shari'ah guidelines."
+    },
+    {
+        "Question_ID":"QID_0029",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"A Takaful operator prepares its financial statements and omits disclosure of a Qard Hasan extended to the participants' fund to cover a deficit. Under the Shari'ah governance and disclosure requirements, how should this omission be evaluated?",
+        "A":"It is acceptable if the matter is disclosed internally within the institution.",
+        "B":"It constitutes a breach because Qard Hasan is not permitted in Takaful operations.",
+        "C":"It is acceptable if disclosure may adversely affect the institution's financial position or reputation.",
+        "D":"It constitutes a breach because relevant information relating to Qard Hasan must be disclosed in the financial statements.",
+        "True answer":"It constitutes a breach because relevant information relating to Qard Hasan must be disclosed in the financial statements."
+    },
+    {
+        "Question_ID":"QID_0030",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"An Islamic financial institution discontinues its internal Shari'ah Supervisory Board and relies solely on rulings issued by the central Shari'ah authority for compliance purposes. Under the Shari'ah governance framework, how should this arrangement be evaluated?",
+        "A":"It is acceptable because central Shari'ah rulings replace institutional Shari'ah governance functions.",
+        "B":"It is acceptable if the institution obtains direct oversight from the central Shari'ah authority.",
+        "C":"It is not acceptable because internal Shari'ah governance functions remain the responsibility of the institution.",
+        "D":"It is acceptable if external Shari'ah audit is implemented in place of internal supervision.",
+        "True answer":"It is not acceptable because internal Shari'ah governance functions remain the responsibility of the institution."
+    },
+    {
+        "Question_ID":"QID_0031",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"To manage its limited budget during its first year of operations, a newly licensed Islamic retail bank officially outsources both its internal Shari'ah audit and its day-to-day Shari'ah Compliance Department (SCfunctions to a reputable external advisory firm, arguing that this guarantees maximum independence from internal pressure. Based on the governance framework for the compliance function, how is the bank's decision to outsource the SCD evaluated?",
+        "A":"It is permissible only if the external advisory firm is completely independent of the bank's Shari'ah Supervisory Board to avoid any self-review threat.",
+        "B":"It is unacceptable because the compliance function is an internal management responsibility that inherently cannot be delegated to third parties.",
+        "C":"It is a valid strategy for newly established or smaller banks, provided the external firm's Shari'ah compliance manual is approved by the bank's board of directors.",
+        "D":"It is only permissible if the bank's internal Shari'ah audit team continues to perform the ex-post detective controls while the external firm handles the ex-ante preventive controls.",
+        "True answer":"It is unacceptable because the compliance function is an internal management responsibility that inherently cannot be delegated to third parties."
+    },
+    {
+        "Question_ID":"QID_0032",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"The CEO of an Islamic financial institution is restructuring the organization and decides to merge the product development team directly into the Shari'ah Compliance Department (SCto speed up the launch of new financing apps, mandating that the Head of the SCD will now officially report only to the Shari'ah Supervisory Board (SSto ensure total religious independence. Considering the structural and reporting requirements for the compliance unit, what makes the CEO's restructuring technically invalid?",
+        "A":"The SCD is fundamentally a management function that must report to senior management and allowing it to actively develop products creates an inherent self-review threat.",
+        "B":"The SCD must report primarily to the risk management committee, and merging it with product development violates the specific mandate of the central Shari'ah board.",
+        "C":"The SCD is required to be structurally independent from the SSB to act as a proper check and balance, meaning a direct reporting line to the scholars is strictly prohibited.",
+        "D":"The SCD is an ex-post detective control organ, making it incompatible with the ex-ante preventive nature of designing and launching new financial products.",
+        "True answer":"The SCD is fundamentally a management function that must report to senior management and allowing it to actively develop products creates an inherent self-review threat."
+    },
+    {
+        "Question_ID":"QID_0033",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"An Islamic financial institution assigns the secretariat function of the Shari'ah Supervisory Board to an employee who also performs Shari'ah compliance duties within management. Under the Shari'ah governance framework, when is such an arrangement permissible?",
+        "A":"When the individual performs secretariat duties under the direct oversight of the Shari'ah Supervisory Board and appropriate safeguards are in place to maintain independence.",
+        "B":"When the institution lacks sufficient resources to appoint a separate secretariat function.",
+        "C":"When the Shari'ah Supervisory Board approves the arrangement regardless of reporting structure.",
+        "D":"When the individual avoids reviewing matters previously handled by the compliance function.",
+        "True answer":"When the individual performs secretariat duties under the direct oversight of the Shari'ah Supervisory Board and appropriate safeguards are in place to maintain independence."
+    },
+    {
+        "Question_ID":"QID_0034",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"A large Islamic financial institution integrates its internal Shari'ah audit function into the internal audit department. Under the Shari'ah governance framework, how should this arrangement be evaluated?",
+        "A":"It is not permissible because internal audit functions cannot perform Shari'ah-related assessments.",
+        "B":"It is not appropriate because such integration is only acceptable in limited cases, such as smaller institutions or less developed environments.",
+        "C":"It is permissible if the head of internal audit meets Shari'ah fit and proper requirements.",
+        "D":"It is not permissible unless the function is outsourced to an external party.",
+        "True answer":"It is not appropriate because such integration is only acceptable in limited cases, such as smaller institutions or less developed environments."
+    },
+    {
+        "Question_ID":"QID_0035",
+        "Theme":"AAOIFI GS 01: Shari'ah Governance Framework (Revised 2024)",
+        "Question":"A large conventional banking group operates a standalone Islamic finance window. The group's executives argue that because the window is not a separate legal entity, it should not be subjected to a rigorous, independent external Shari'ah audit. How does the AAOIFI auditing standards evaluate this claim?",
+        "A":"The executives are correct, as external Shari'ah audit requirements are generally applied to legally incorporated Islamic financial institutions, and not to internal divisions that operate under the same legal identity as the parent bank.",
+        "B":"The claim is not appropriate, as Islamic windows and standalone branches are expected to be subject to the same level of independent external Shari'ah audit and oversight, given that Shari'ah compliance applies to the nature of activities rather than the legal form of the entity.",
+        "C":"The claim is acceptable provided the parent bank undergoes a comprehensive statutory financial audit, as this would indirectly ensure that the Islamic window's operations are reviewed within the overall audit framework of the parent bank.",
+        "D":"The claim may be accepted where the Islamic window maintains internal Shari'ah review mechanisms and proper segregation of funds, as these controls can sufficiently mitigate the need for a full external Shari'ah audit if the parent bank is audited by an external auditor.",
+        "True answer":"The claim is not appropriate, as Islamic windows and standalone branches are expected to be subject to the same level of independent external Shari'ah audit and oversight, given that Shari'ah compliance applies to the nature of activities rather than the legal form of the entity."
     }
 ]
