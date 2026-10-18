@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Stops the browser's own automatic page translation; the page has its own 3-language interface -->
     <meta name="google" content="notranslate">
     <title>Professional Assessment Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -115,8 +116,6 @@
             color: var(--text);
             font-family: var(--font);
             line-height: 1.55;
-            position: static !important;   /* Google Translate fix */
-            top: 0 !important;             /* Google Translate fix */
         }
 
         html[data-font="dyslexia"] body {
@@ -156,7 +155,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Reduced motion (set by user or OS preference) */
+        /* Reduced motion (set by the user or by the OS preference) */
         html[data-motion="reduce"] *,
         html[data-motion="reduce"] *::before,
         html[data-motion="reduce"] *::after {
@@ -186,6 +185,12 @@
         [data-theme="contrast"] .brand-mark { background: #ffe600; color: #000; box-shadow: none; }
         .topbar-actions { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 
+        .lang-select {
+            min-height: 2.6rem; padding: .35rem .7rem; border-radius: 12px;
+            border: var(--bw) solid var(--border); background: var(--surface-2);
+            font-weight: 700; cursor: pointer;
+        }
+
         .icon-btn {
             width: 2.6rem; height: 2.6rem; display: grid; place-items: center;
             border-radius: 12px; border: var(--bw) solid var(--border);
@@ -206,23 +211,6 @@
         @media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
 
         /* =========================================================
-           GOOGLE TRANSLATE (kept from original)
-           ========================================================= */
-        .goog-te-banner-frame, .goog-tooltip, .goog-te-gadget-icon { display: none !important; }
-        .goog-te-gadget-simple {
-            background-color: var(--surface-2) !important;
-            border: var(--bw) solid var(--border) !important;
-            padding: .4rem .6rem !important;
-            border-radius: 10px !important;
-            font-size: .9rem !important;
-            line-height: normal !important;
-            display: inline-block !important;
-            cursor: pointer;
-        }
-        .goog-te-menu-value span { color: var(--text) !important; font-weight: 600 !important; border-left: none !important; }
-        .goog-te-menu-value span:last-child { display: none; }
-
-        /* =========================================================
            START SCREEN
            ========================================================= */
         .hero { text-align: center; margin-bottom: 1.75rem; }
@@ -239,6 +227,7 @@
         }
         .input::placeholder { color: var(--text-2); opacity: .8; }
         .input:focus { outline: none; border-color: var(--focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 35%, transparent); }
+        .input:disabled { opacity: .6; cursor: not-allowed; }
 
         .count-row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
         .count-row .input { width: 6.5rem; flex: 0 0 auto; text-align: center; font-weight: 700; }
@@ -249,10 +238,12 @@
             border: 2px solid var(--border); background: transparent; color: var(--text);
             font-weight: 700; cursor: pointer; transition: border-color .2s ease, background-color .2s ease;
         }
-        .chip-btn:hover { border-color: var(--accent-text); }
+        .chip-btn:hover:not(:disabled) { border-color: var(--accent-text); }
+        .chip-btn:disabled { opacity: .45; cursor: not-allowed; }
         .chip-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
         .hint { margin: .6rem 0 0; font-size: .92rem; color: var(--text-2); }
+        .hint strong { color: var(--text); font-variant-numeric: tabular-nums; }
 
         .topics {
             margin: 0; min-width: 0; padding: .9rem 1rem 1rem;
@@ -280,6 +271,19 @@
             flex: 0 0 auto; min-width: 2rem; text-align: center; font-size: .8rem; font-weight: 700;
             padding: .15rem .5rem; border-radius: 999px; background: var(--chip-bg); color: var(--chip-text);
         }
+
+        .mock-panel {
+            border: 2px solid var(--accent-text); border-radius: var(--radius-sm);
+            background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+            padding: 1.1rem 1.2rem;
+        }
+        .mock-badge {
+            display: inline-flex; align-items: center; gap: .45rem; margin-bottom: .6rem;
+            padding: .3rem .8rem; border-radius: 999px;
+            background: var(--accent); color: var(--on-accent); font-weight: 800; font-size: .85rem;
+        }
+        .mock-panel h3 { margin-bottom: .4rem; }
+        .mock-total { margin: .75rem 0 0; font-weight: 700; color: var(--accent-text); }
 
         .form-error {
             margin: 0 0 1rem; padding: .7rem .9rem; border-radius: 10px;
@@ -349,10 +353,12 @@
         [data-theme="contrast"] .progress-fill { background: var(--accent); }
 
         .quiz-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .chips { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem; min-width: 0; }
         .chip {
             display: inline-block; max-width: 100%; padding: .3rem .8rem; border-radius: 999px;
             background: var(--chip-bg); color: var(--chip-text); font-size: .85rem; font-weight: 700; line-height: 1.35;
         }
+        .chip-pts { background: transparent; border: 1px solid var(--border); color: var(--text); }
         [data-theme="contrast"] .chip { border: 2px solid var(--accent); }
         .counter { font-weight: 800; color: var(--text-2); font-variant-numeric: tabular-nums; }
 
@@ -416,6 +422,10 @@
             text-transform: uppercase; letter-spacing: .07em;
         }
         .asos p { margin: 0; line-height: 1.6; font-size: .97rem; overflow-wrap: anywhere; }
+        .asos p.muted { font-style: italic; }
+
+        .confirm-bar { display: grid; gap: .5rem; margin-top: 1.1rem; }
+        .confirm-hint { margin: 0; text-align: center; font-size: .92rem; color: var(--text-2); }
 
         .kbd-hint { margin: 1.25rem 0 0; font-size: .85rem; color: var(--text-2); text-align: center; }
         kbd {
@@ -442,10 +452,10 @@
         .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
         .ring circle { fill: none; stroke-width: 9; }
         .ring .track { stroke: var(--border); }
-        .ring .fg { stroke: var(--ring); stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
-        .ring-value { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .ring-value strong { font-size: 2.3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
-        .ring-value span { margin-top: .3rem; font-size: .8rem; color: var(--text-2); text-transform: uppercase; letter-spacing: .08em; }
+        .ring .fg { stroke: var(--ring); transition: stroke-dashoffset 1s ease; }
+        .ring-value { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 .5rem; text-align: center; }
+        .ring-value strong { font-size: 2.2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+        .ring-value span { margin-top: .3rem; font-size: .75rem; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
 
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .75rem; width: 100%; }
         .stat {
@@ -465,7 +475,7 @@
             border-top: 1px solid var(--border); padding-top: 1.5rem; margin-bottom: 1rem;
         }
         .seg-bar {
-            display: inline-flex; gap: .3rem; padding: .25rem; border-radius: 12px;
+            display: inline-flex; flex-wrap: wrap; gap: .3rem; padding: .25rem; border-radius: 12px;
             background: var(--surface-2); border: 1px solid var(--border);
         }
         .seg-bar button {
@@ -578,16 +588,17 @@
            ========================================================= */
         @media (max-width: 560px) {
             body { padding: .75rem; }
-            .kbd-hint { display: none; }
             .card { padding: 1.1rem; min-height: 0; }
             .timer { min-width: 6rem; font-size: 1.25rem; }
             .option { font-size: 1rem; }
+            .kbd-hint { display: none; }
+            .lang-select { max-width: 8.5rem; }
         }
     </style>
 </head>
 <body>
-    <noscript><p style="padding:2rem; text-align:center;">This test platform requires JavaScript.</p></noscript>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <noscript><p style="padding:2rem; text-align:center;">This test platform requires JavaScript. / Bu platforma uchun JavaScript kerak. / Для работы платформы нужен JavaScript.</p></noscript>
+    <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
     <div id="sr-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
     <div class="app">
@@ -595,18 +606,23 @@
         <header class="topbar">
             <div class="brand">
                 <span class="brand-mark" aria-hidden="true"><i class="fas fa-graduation-cap"></i></span>
-                <span>Assessment Platform</span>
+                <span data-i18n="brand">Assessment Platform</span>
             </div>
             <div class="topbar-actions">
-                <div id="google_translate_element"></div>
-                <button type="button" class="icon-btn" id="btn-analytics" title="Analytics" aria-label="Open analytics">
+                <label class="sr-only" for="lang-select" data-i18n="lang.label">Language</label>
+                <select id="lang-select" class="lang-select" data-i18n-title="lang.label" title="Language">
+                    <option value="en">English</option>
+                    <option value="uz">O'zbekcha</option>
+                    <option value="ru">Русский</option>
+                </select>
+                <button type="button" class="icon-btn" id="btn-analytics" data-i18n-title="btn.analytics" data-i18n-aria="btn.analytics" title="Analytics" aria-label="Analytics">
                     <i class="fas fa-chart-line" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="icon-btn" id="btn-theme" title="Change theme">
+                <button type="button" class="icon-btn" id="btn-theme" title="Change theme" aria-label="Change theme">
                     <i class="fas fa-moon" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="icon-btn" id="btn-settings" title="Display and accessibility"
-                        aria-label="Display and accessibility settings" aria-haspopup="dialog" aria-controls="settings-dialog">
+                <button type="button" class="icon-btn" id="btn-settings" data-i18n-title="btn.settings" data-i18n-aria="btn.settings"
+                        title="Display and accessibility" aria-label="Display and accessibility" aria-haspopup="dialog" aria-controls="settings-dialog">
                     <i class="fas fa-universal-access" aria-hidden="true"></i>
                 </button>
             </div>
@@ -617,68 +633,79 @@
             <!-- 1. LOADING -->
             <section id="screen-loading" class="screen" role="status">
                 <div class="spinner" aria-hidden="true"></div>
-                <p class="center muted">Loading question bank…</p>
+                <p class="center muted" data-i18n="loading">Loading question bank…</p>
             </section>
 
             <!-- 2. ERROR -->
             <section id="screen-error" class="screen" hidden>
                 <div class="error-box">
                     <i class="fas fa-triangle-exclamation big-icon bad" aria-hidden="true"></i>
-                    <h2 tabindex="-1">Could not load the question bank</h2>
-                    <p class="muted">Check your internet connection, then try again.</p>
-                    <button type="button" class="btn btn-sm" id="btn-retry"><i class="fas fa-rotate-right" aria-hidden="true"></i> Retry</button>
+                    <h2 tabindex="-1" data-i18n="err.title">Could not load the question bank</h2>
+                    <p class="muted" data-i18n="err.text">Check your internet connection, then try again.</p>
+                    <button type="button" class="btn btn-sm" id="btn-retry"><i class="fas fa-rotate-right" aria-hidden="true"></i> <span data-i18n="retry">Retry</span></button>
                 </div>
             </section>
 
             <!-- 3. START -->
             <section id="screen-start" class="screen" hidden>
                 <header class="hero">
-                    <h1 id="start-title" tabindex="-1"><i class="fas fa-laptop-code" aria-hidden="true"></i> Online Test Platform</h1>
-                    <p class="muted">Enter your name, choose topics and select how many questions you want.</p>
+                    <h1 id="start-title" tabindex="-1"><i class="fas fa-laptop-code" aria-hidden="true"></i> <span data-i18n="start.title">Online Test Platform</span></h1>
+                    <p class="muted" data-i18n="start.sub">Enter your name, choose the source and topics, then set the number of questions.</p>
                 </header>
 
                 <div class="grid-2">
                     <div>
                         <div class="field">
-                            <label class="label" for="username"><i class="fas fa-user" aria-hidden="true"></i> Full name</label>
-                            <input class="input" id="username" type="text" autocomplete="name" placeholder="e.g. Aziz Karimov">
+                            <label class="label" for="username"><i class="fas fa-user" aria-hidden="true"></i> <span data-i18n="name.label">Full name</span></label>
+                            <input class="input" id="username" type="text" autocomplete="name" data-i18n-ph="name.ph" placeholder="e.g. Aziz Karimov">
                         </div>
 
                         <div class="field">
-                            <label class="label" for="q-count"><i class="fas fa-list-ol" aria-hidden="true"></i> Number of questions</label>
+                            <span class="label" id="source-label"><i class="fas fa-folder-open" aria-hidden="true"></i> <span data-i18n="source.label">Source</span></span>
+                            <div class="seg" id="source-group" role="radiogroup" aria-labelledby="source-label"></div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="q-count"><i class="fas fa-list-ol" aria-hidden="true"></i> <span data-i18n="count.label">Number of questions</span></label>
                             <div class="count-row">
                                 <input class="input" id="q-count" type="number" inputmode="numeric" min="5" value="10" aria-describedby="count-hint">
-                                <div class="presets" role="group" aria-label="Quick select question count">
+                                <div class="presets" role="group" aria-label="Quick select question count" data-i18n-aria="count.quick">
                                     <button type="button" class="chip-btn" data-preset="10" aria-pressed="false">10</button>
                                     <button type="button" class="chip-btn" data-preset="20" aria-pressed="false">20</button>
                                     <button type="button" class="chip-btn" data-preset="30" aria-pressed="false">30</button>
-                                    <button type="button" class="chip-btn" data-preset="max" aria-pressed="false">All</button>
+                                    <button type="button" class="chip-btn" data-preset="max" aria-pressed="false" data-i18n="count.all">All</button>
                                 </div>
                             </div>
-                            <p class="hint" id="count-hint">
-                                Available: <strong id="dyn-total" class="notranslate">0</strong> ·
-                                Time: <strong id="est-time" class="notranslate">40</strong> min (4 min per question)
-                            </p>
+                            <p class="hint" id="count-hint"></p>
                         </div>
                     </div>
 
-                    <fieldset class="topics">
-                        <legend><i class="fas fa-layer-group" aria-hidden="true"></i> Topics <span class="muted small">(select at least one)</span></legend>
-                        <div class="topics-toolbar">
-                            <button type="button" class="link-btn" id="btn-select-all">Select all</button>
-                            <button type="button" class="link-btn" id="btn-clear">Clear</button>
-                        </div>
-                        <div class="topic-list" id="topic-list"></div>
-                    </fieldset>
+                    <div>
+                        <fieldset class="topics" id="topics-panel">
+                            <legend><i class="fas fa-layer-group" aria-hidden="true"></i> <span data-i18n="topics.legend">Topics</span> <span class="muted small" data-i18n="topics.hint">(select at least one)</span></legend>
+                            <div class="topics-toolbar">
+                                <button type="button" class="link-btn" id="btn-select-all" data-i18n="topics.all">Select all</button>
+                                <button type="button" class="link-btn" id="btn-clear" data-i18n="topics.clear">Clear</button>
+                            </div>
+                            <div class="topic-list" id="topic-list"></div>
+                        </fieldset>
+
+                        <section class="mock-panel" id="mock-panel" hidden>
+                            <div class="mock-badge"><i class="fas fa-award" aria-hidden="true"></i> <span data-i18n="source.mock">MOCK test</span></div>
+                            <h3 data-i18n="mock.title">MOCK test (100 points)</h3>
+                            <p class="muted" id="mock-text"></p>
+                            <p class="mock-total" id="mock-total"></p>
+                        </section>
+                    </div>
                 </div>
 
                 <p id="form-error" class="form-error" role="alert" hidden></p>
 
                 <button type="button" class="btn btn-lg" id="btn-start">
-                    <i class="fas fa-play" aria-hidden="true"></i> Start test
+                    <i class="fas fa-play" aria-hidden="true"></i> <span data-i18n="btn.start">Start test</span>
                 </button>
                 <p id="start-msg" class="center accent-text" hidden>
-                    <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i> Preparing your session…
+                    <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i> <span data-i18n="start.prep">Preparing your session…</span>
                 </p>
             </section>
 
@@ -689,34 +716,45 @@
                         <i class="fas fa-user-circle" aria-hidden="true"></i>
                         <span id="d-name" class="notranslate"></span>
                     </div>
-                    <div class="timer notranslate" id="timer" role="timer" aria-label="Time remaining">--:--</div>
+                    <div class="timer notranslate" id="timer" role="timer" data-i18n-aria="quiz.timer" aria-label="Time remaining">--:--</div>
                 </div>
 
-                <div class="progress" id="progress" role="progressbar" aria-label="Test progress"
+                <div class="progress" id="progress" role="progressbar" data-i18n-aria="quiz.progress" aria-label="Test progress"
                      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                     <div class="progress-fill" id="progress-fill"></div>
                 </div>
 
                 <div class="quiz-meta">
-                    <span class="chip" id="q-theme"></span>
+                    <div class="chips">
+                        <span class="chip" id="q-source"></span>
+                        <span class="chip" id="q-theme"></span>
+                        <span class="chip chip-pts" id="q-worth" hidden></span>
+                    </div>
                     <span class="counter notranslate" id="q-counter">1 / 1</span>
                 </div>
 
                 <h2 class="question" id="q-text" tabindex="-1"></h2>
 
-                <div class="options" id="options" role="group" aria-label="Answer options"></div>
+                <div class="options" id="options" role="group" data-i18n-aria="quiz.options" aria-label="Answer options"></div>
+
+                <div class="confirm-bar" id="confirm-bar" hidden>
+                    <p class="confirm-hint" id="confirm-hint" data-i18n="confirm.hint">Select an answer, then confirm it.</p>
+                    <button type="button" class="btn" id="btn-confirm" disabled>
+                        <i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="btn.confirm">Confirm answer</span>
+                    </button>
+                </div>
 
                 <div class="feedback" id="feedback" hidden>
                     <div class="fb-title" id="fb-title"></div>
                     <p class="fb-answer" id="fb-answer"></p>
                     <div class="asos">
-                        <div class="asos-title"><i class="fas fa-book-open" aria-hidden="true"></i> Asos</div>
+                        <div class="asos-title"><i class="fas fa-book-open" aria-hidden="true"></i> <span data-i18n="asos">Basis</span></div>
                         <p id="fb-asos"></p>
                     </div>
                     <button type="button" class="btn" id="btn-next"></button>
                 </div>
 
-                <p class="kbd-hint">
+                <p class="kbd-hint" data-i18n-html="quiz.kbd">
                     Keyboard: <kbd>1</kbd>–<kbd>4</kbd> or <kbd>A</kbd>–<kbd>D</kbd> to answer · <kbd>Enter</kbd> to continue
                 </p>
             </section>
@@ -724,47 +762,47 @@
             <!-- 5. RESULT -->
             <section id="screen-result" class="screen" hidden>
                 <div class="result-head">
-                    <h2 id="result-title" tabindex="-1">Assessment complete!</h2>
-                    <p class="muted">Your answers were submitted to the results database.</p>
-                    <p id="result-note" class="result-note" hidden>Time is up. Unanswered questions count as incorrect.</p>
+                    <h2 id="result-title" tabindex="-1" data-i18n="res.title">Assessment complete!</h2>
+                    <p class="muted" data-i18n="res.saved">Your answers were submitted to the results database.</p>
+                    <p id="result-note" class="result-note" data-i18n="res.timeout" hidden>Time is up. Unanswered questions count as incorrect.</p>
                     <p id="save-warning" class="result-note" hidden>
                         <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
-                        Some answers could not be sent because of a network error.
+                        <span data-i18n="res.savefail">Some answers could not be sent because of a network error.</span>
                     </p>
                 </div>
 
                 <div class="result-top">
-                    <div class="ring" id="score-ring" role="img" aria-label="Score 0%">
+                    <div class="ring" id="score-ring" role="img" aria-label="Score">
                         <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
                             <circle class="track" cx="60" cy="60" r="52"></circle>
                             <circle class="fg" id="ring-fg" cx="60" cy="60" r="52"
-                                    pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+                                    pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" stroke-linecap="butt"></circle>
                         </svg>
                         <div class="ring-value">
                             <strong id="final-score" class="notranslate">0%</strong>
-                            <span>Score</span>
+                            <span id="ring-sub" data-i18n="res.score">Score</span>
                         </div>
                     </div>
 
                     <div class="stats">
-                        <div class="stat good"><strong id="r-correct" class="notranslate">0</strong><span>Correct</span></div>
-                        <div class="stat bad"><strong id="r-wrong" class="notranslate">0</strong><span>Incorrect</span></div>
-                        <div class="stat"><strong id="r-skipped" class="notranslate">0</strong><span>Not answered</span></div>
-                        <div class="stat"><strong id="r-time" class="notranslate">00:00</strong><span>Time used</span></div>
+                        <div class="stat good"><strong id="r-correct" class="notranslate">0</strong><span data-i18n="res.correct">Correct</span></div>
+                        <div class="stat bad"><strong id="r-wrong" class="notranslate">0</strong><span data-i18n="res.wrong">Incorrect</span></div>
+                        <div class="stat"><strong id="r-skipped" class="notranslate">0</strong><span data-i18n="res.skipped">Not answered</span></div>
+                        <div class="stat"><strong id="r-time" class="notranslate">00:00</strong><span data-i18n="res.time">Time used</span></div>
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="btn" id="btn-retake"><i class="fas fa-redo" aria-hidden="true"></i> Retake test</button>
-                    <button type="button" class="btn btn-outline" id="btn-result-analytics"><i class="fas fa-chart-bar" aria-hidden="true"></i> View analytics</button>
+                    <button type="button" class="btn" id="btn-retake"><i class="fas fa-redo" aria-hidden="true"></i> <span data-i18n="btn.retake">Retake test</span></button>
+                    <button type="button" class="btn btn-outline" id="btn-result-analytics"><i class="fas fa-chart-bar" aria-hidden="true"></i> <span data-i18n="btn.viewstats">View analytics</span></button>
                 </div>
 
                 <div class="review-title">
-                    <h3><i class="fas fa-check-double" aria-hidden="true"></i> Review answers</h3>
-                    <div class="seg-bar" role="group" aria-label="Filter answers">
-                        <button type="button" data-review-filter="all" aria-pressed="true">All</button>
-                        <button type="button" data-review-filter="wrong" aria-pressed="false">Incorrect</button>
-                        <button type="button" data-review-filter="correct" aria-pressed="false">Correct</button>
+                    <h3><i class="fas fa-check-double" aria-hidden="true"></i> <span data-i18n="review.title">Review answers</span></h3>
+                    <div class="seg-bar" role="group" data-i18n-aria="review.filter" aria-label="Filter answers">
+                        <button type="button" data-review-filter="all" aria-pressed="true" data-i18n="filter.all">All</button>
+                        <button type="button" data-review-filter="wrong" aria-pressed="false" data-i18n="filter.wrong">Incorrect</button>
+                        <button type="button" data-review-filter="correct" aria-pressed="false" data-i18n="filter.correct">Correct</button>
                     </div>
                 </div>
                 <ul class="review-list" id="review-list"></ul>
@@ -777,69 +815,66 @@
         <div class="modal-backdrop" data-close></div>
         <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1">
             <div class="modal-head">
-                <h2 id="settings-title"><i class="fas fa-universal-access" aria-hidden="true"></i> Display & accessibility</h2>
-                <button type="button" class="icon-btn" data-close aria-label="Close settings"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+                <h2 id="settings-title"><i class="fas fa-universal-access" aria-hidden="true"></i> <span data-i18n="set.title">Display & accessibility</span></h2>
+                <button type="button" class="icon-btn" data-close data-i18n-aria="set.close" aria-label="Close settings"><i class="fas fa-xmark" aria-hidden="true"></i></button>
             </div>
 
             <fieldset class="opt-group">
-                <legend>Theme</legend>
+                <legend data-i18n="set.theme">Theme</legend>
                 <div class="seg">
-                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="dark"><span>Dark</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="light"><span>Light</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="contrast"><span>High contrast</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="dark"><span data-i18n="theme.dark">Dark</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="light"><span data-i18n="theme.light">Light</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-theme" data-setting="theme" value="contrast"><span data-i18n="theme.contrast">High contrast</span></label>
                 </div>
             </fieldset>
 
             <fieldset class="opt-group">
-                <legend>Text size</legend>
+                <legend data-i18n="set.size">Text size</legend>
                 <div class="seg">
-                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="normal"><span>Normal</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="large"><span>Large</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="xl"><span>Extra large</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="normal"><span data-i18n="set.size.normal">Normal</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="large"><span data-i18n="set.size.large">Large</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-size" data-setting="size" value="xl"><span data-i18n="set.size.xl">Extra large</span></label>
                 </div>
             </fieldset>
 
             <fieldset class="opt-group">
-                <legend>Font</legend>
-                <p class="opt-desc">Dyslexia-friendly uses a simpler typeface with wider letter and word spacing.</p>
+                <legend data-i18n="set.font">Font</legend>
+                <p class="opt-desc" data-i18n="set.font.desc">Dyslexia-friendly uses a simpler typeface with wider letter and word spacing.</p>
                 <div class="seg">
-                    <label class="seg-opt"><input type="radio" name="s-font" data-setting="font" value="standard"><span>Standard</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-font" data-setting="font" value="dyslexia"><span>Dyslexia-friendly</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-font" data-setting="font" value="standard"><span data-i18n="set.font.std">Standard</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-font" data-setting="font" value="dyslexia"><span data-i18n="set.font.dys">Dyslexia-friendly</span></label>
                 </div>
             </fieldset>
 
             <fieldset class="opt-group">
-                <legend>Correct / incorrect colors</legend>
-                <p class="opt-desc">Answers are always marked with an icon and a text label too, so color is never the only signal.</p>
+                <legend data-i18n="set.colors">Correct / incorrect colors</legend>
+                <p class="opt-desc" data-i18n="set.colors.desc">Answers are always marked with an icon and a text label too, so color is never the only signal.</p>
                 <div class="seg">
-                    <label class="seg-opt"><input type="radio" name="s-palette" data-setting="palette" value="standard"><span>Standard (green / red)</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-palette" data-setting="palette" value="cb"><span>Color-blind friendly (blue / orange)</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-palette" data-setting="palette" value="standard"><span data-i18n="set.colors.std">Standard (green / red)</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-palette" data-setting="palette" value="cb"><span data-i18n="set.colors.cb">Color-blind friendly (blue / orange)</span></label>
                 </div>
             </fieldset>
 
             <fieldset class="opt-group">
-                <legend>Answer feedback during a test</legend>
-                <p class="opt-desc">
-                    <strong>After each question:</strong> see right away whether you were correct, plus the explanation (Asos).
-                    <strong>At the end:</strong> exam style; answers and explanations appear in the review.
-                </p>
+                <legend data-i18n="set.feedback">Answer feedback during a test</legend>
+                <p class="opt-desc" data-i18n-html="set.feedback.desc"></p>
                 <div class="seg">
-                    <label class="seg-opt"><input type="radio" name="s-feedback" data-setting="feedback" value="instant"><span>After each question</span></label>
-                    <label class="seg-opt"><input type="radio" name="s-feedback" data-setting="feedback" value="exam"><span>At the end (exam)</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-feedback" data-setting="feedback" value="instant"><span data-i18n="set.feedback.inst">After each question</span></label>
+                    <label class="seg-opt"><input type="radio" name="s-feedback" data-setting="feedback" value="exam"><span data-i18n="set.feedback.exam">At the end (exam)</span></label>
                 </div>
             </fieldset>
 
             <fieldset class="opt-group">
-                <legend>Motion</legend>
+                <legend data-i18n="set.motion">Motion</legend>
                 <label class="switch-row">
-                    <span>Reduce animations</span>
+                    <span data-i18n="set.reduce">Reduce animations</span>
                     <input type="checkbox" data-setting="reduceMotion">
                 </label>
             </fieldset>
 
             <div class="modal-foot">
-                <button type="button" class="btn btn-outline btn-sm" id="btn-reset-settings"><i class="fas fa-rotate-left" aria-hidden="true"></i> Reset to defaults</button>
-                <button type="button" class="btn btn-sm" data-close>Done</button>
+                <button type="button" class="btn btn-outline btn-sm" id="btn-reset-settings"><i class="fas fa-rotate-left" aria-hidden="true"></i> <span data-i18n="set.reset">Reset to defaults</span></button>
+                <button type="button" class="btn btn-sm" data-close data-i18n="set.done">Done</button>
             </div>
         </div>
     </div>
@@ -849,54 +884,41 @@
         <div class="modal-backdrop" data-close></div>
         <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="analytics-title" tabindex="-1">
             <div class="modal-head">
-                <h2 id="analytics-title"><i class="fas fa-history" aria-hidden="true"></i> Historical analysis</h2>
-                <button type="button" class="icon-btn" data-close aria-label="Close analytics"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+                <h2 id="analytics-title"><i class="fas fa-history" aria-hidden="true"></i> <span data-i18n="an.title">Historical analysis</span></h2>
+                <button type="button" class="icon-btn" data-close data-i18n-aria="an.close" aria-label="Close analytics"><i class="fas fa-xmark" aria-hidden="true"></i></button>
             </div>
 
             <div class="dash-toolbar">
-                <label class="sr-only" for="user-filter">Filter by user</label>
+                <label class="sr-only" for="user-filter" data-i18n="an.filter">Filter by user</label>
                 <select id="user-filter" class="select notranslate">
-                    <option value="all">All users</option>
+                    <option value="all" data-i18n="an.allusers">All users</option>
                 </select>
-                <button type="button" class="btn btn-outline btn-sm" id="btn-refresh"><i class="fas fa-arrows-rotate" aria-hidden="true"></i> Refresh</button>
+                <button type="button" class="btn btn-outline btn-sm" id="btn-refresh"><i class="fas fa-arrows-rotate" aria-hidden="true"></i> <span data-i18n="an.refresh">Refresh</span></button>
             </div>
 
-            <div id="dash-loader" class="spinner" role="status" aria-label="Loading analytics" hidden></div>
-            <p id="dash-error" class="form-error" hidden>Could not load analytics data. Please try again.</p>
+            <div id="dash-loader" class="spinner" role="status" data-i18n-aria="an.loading" aria-label="Loading analytics" hidden></div>
+            <p id="dash-error" class="form-error" data-i18n="an.error" hidden>Could not load analytics data. Please try again.</p>
 
             <div id="dash-data" hidden>
                 <div class="dash-stats">
-                    <div class="dash-stat"><strong id="total-tests" class="notranslate">0</strong><span>Total sessions</span></div>
-                    <div class="dash-stat"><strong id="avg-score" class="notranslate">0%</strong><span>Average score</span></div>
-                    <div class="dash-stat"><strong id="total-questions" class="notranslate">0</strong><span>Questions answered</span></div>
+                    <div class="dash-stat"><strong id="total-tests" class="notranslate">0</strong><span data-i18n="an.sessions">Total sessions</span></div>
+                    <div class="dash-stat"><strong id="avg-score" class="notranslate">0%</strong><span data-i18n="an.avg">Average score</span></div>
+                    <div class="dash-stat"><strong id="total-questions" class="notranslate">0</strong><span data-i18n="an.answered">Questions answered</span></div>
                 </div>
 
                 <div class="panel">
-                    <h3>Score progress</h3>
-                    <div class="chart-box"><canvas id="scoreChart" role="img" aria-label="Line chart of recent session scores"></canvas></div>
-                    <p id="chart-note" class="muted center small" hidden>Chart library could not be loaded. Topic performance is still shown below.</p>
+                    <h3 data-i18n="an.progress">Score progress</h3>
+                    <div class="chart-box"><canvas id="scoreChart" role="img" data-i18n-aria="an.progress" aria-label="Score progress"></canvas></div>
+                    <p id="chart-note" class="muted center small" data-i18n="an.chartfail" hidden>Chart library could not be loaded. Topic performance is still shown below.</p>
                 </div>
 
                 <div class="panel">
-                    <h3>Topic performance</h3>
+                    <h3 data-i18n="an.topics">Topic performance</h3>
                     <div id="topic-progress-area"></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Google Translate (kept from the original) -->
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,ru,uz',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-    </script>
 
     <script>
     /* =========================================================
@@ -906,13 +928,409 @@
     const DB_URL  = "https://raw.githubusercontent.com/sunattagayev-cloud/tests_cpaage/refs/heads/main/testbase.json";
     const SECONDS_PER_QUESTION = 240;
     const MIN_QUESTIONS = 5;
+    const LANGS = ['en', 'uz', 'ru'];
+    const DEFAULT_LANG = 'en';
     const THEME_ORDER = ['dark', 'light', 'contrast'];
-    const THEME_LABEL = { dark: 'Dark', light: 'Light', contrast: 'High contrast' };
-    const THEME_ICON  = { dark: 'fa-moon', light: 'fa-sun', contrast: 'fa-circle-half-stroke' };
+    const THEME_ICON = { dark: 'fa-moon', light: 'fa-sun', contrast: 'fa-circle-half-stroke' };
+    const THEME_KEY = { dark: 'theme.dark', light: 'theme.light', contrast: 'theme.contrast' };
     const SCREENS = ['screen-loading', 'screen-error', 'screen-start', 'screen-quiz', 'screen-result'];
 
     /* =========================================================
-       SETTINGS (kept in memory only)
+       INTERFACE TEXTS (3 languages)
+       ========================================================= */
+    const I18N = {
+        en: {
+            'doc.title': 'Professional Assessment Platform',
+            'brand': 'Assessment Platform',
+            'lang.label': 'Language',
+            'skip': 'Skip to content',
+            'btn.analytics': 'Analytics',
+            'btn.settings': 'Display and accessibility',
+            'btn.theme.state': 'Theme: {name}. Click to change.',
+            'theme.dark': 'Dark',
+            'theme.light': 'Light',
+            'theme.contrast': 'High contrast',
+            'loading': 'Loading question bank…',
+            'err.title': 'Could not load the question bank',
+            'err.text': 'Check your internet connection, then try again.',
+            'retry': 'Retry',
+            'start.title': 'Online Test Platform',
+            'start.sub': 'Enter your name, choose the source and topics, then set the number of questions.',
+            'name.label': 'Full name',
+            'name.ph': 'e.g. Aziz Karimov',
+            'count.label': 'Number of questions',
+            'count.quick': 'Quick select question count',
+            'count.all': 'All',
+            'hint': 'Available: <strong>{n}</strong> · Time: <strong>{m}</strong> min ({per})',
+            'per': '{m} min per question',
+            'source.label': 'Source',
+            'source.all': 'All sources',
+            'source.mock': 'MOCK test',
+            'topics.legend': 'Topics',
+            'topics.hint': '(select at least one)',
+            'topics.all': 'Select all',
+            'topics.clear': 'Clear',
+            'mock.title': 'MOCK test (100 points)',
+            'mock.text': 'The mock test includes all {n} questions from the bank. Each question is weighted by its Score, and the result is scaled to 100 points.',
+            'mock.total': 'Questions: {n} · Total points: 100 · Time: {m} min',
+            'btn.start': 'Start test',
+            'start.prep': 'Preparing your session…',
+            'err.name': 'Please enter your full name.',
+            'err.topic': 'Select at least one topic.',
+            'err.min': 'Minimum {n} questions required.',
+            'err.notenough': 'Not enough questions in the selected topics.',
+            'quiz.kbd': 'Keyboard: <kbd>1</kbd>–<kbd>4</kbd> or <kbd>A</kbd>–<kbd>D</kbd> to select · <kbd>Enter</kbd> to confirm / continue',
+            'btn.confirm': 'Confirm answer',
+            'confirm.hint': 'Select an answer, then confirm it.',
+            'tag.selected': 'Selected',
+            'sr.selected': 'Option {x} selected. Confirm to save your answer.',
+            'quiz.timer': 'Time remaining',
+            'quiz.progress': 'Test progress',
+            'quiz.options': 'Answer options',
+            'quiz.worth': 'Worth {p} pts',
+            'fb.correct': 'Correct!',
+            'fb.wrong': 'Incorrect',
+            'fb.answer': 'The correct answer is <strong>{x}</strong>',
+            'asos': 'Basis',
+            'asos.none': 'No explanation is available for this question.',
+            'btn.next': 'Next question',
+            'btn.finish': 'See results',
+            'tag.yc': 'Your answer · Correct',
+            'tag.yw': 'Your answer · Incorrect',
+            'tag.correct': 'Correct answer',
+            'tag.yours': 'Your answer',
+            'sr.recorded': 'Answer recorded.',
+            'sr.correct': 'Correct.',
+            'sr.wrong': 'Incorrect. The correct answer is {x}.',
+            'sr.min5': '5 minutes remaining.',
+            'sr.min1': '1 minute remaining.',
+            'sr.sec': '{n} seconds remaining.',
+            'sr.done': 'Test finished. Result: {p}.',
+            'res.title': 'Assessment complete!',
+            'res.saved': 'Your answers were submitted to the results database.',
+            'res.timeout': 'Time is up. Unanswered questions count as incorrect.',
+            'res.savefail': 'Some answers could not be sent because of a network error.',
+            'res.score': 'Score',
+            'res.of100': 'of 100 points',
+            'res.correct': 'Correct',
+            'res.wrong': 'Incorrect',
+            'res.skipped': 'Not answered',
+            'res.time': 'Time used',
+            'btn.retake': 'Retake test',
+            'btn.viewstats': 'View analytics',
+            'review.title': 'Review answers',
+            'review.filter': 'Filter answers',
+            'filter.all': 'All',
+            'filter.wrong': 'Incorrect',
+            'filter.correct': 'Correct',
+            'review.empty': 'Nothing to show for this filter.',
+            'review.notans': 'Not answered',
+            'review.pts': '{p} / {m} pts',
+            'set.title': 'Display & accessibility',
+            'set.close': 'Close settings',
+            'set.theme': 'Theme',
+            'set.size': 'Text size',
+            'set.size.normal': 'Normal',
+            'set.size.large': 'Large',
+            'set.size.xl': 'Extra large',
+            'set.font': 'Font',
+            'set.font.desc': 'Dyslexia-friendly uses a simpler typeface with wider letter and word spacing.',
+            'set.font.std': 'Standard',
+            'set.font.dys': 'Dyslexia-friendly',
+            'set.colors': 'Correct / incorrect colors',
+            'set.colors.desc': 'Answers are always marked with an icon and a text label too, so color is never the only signal.',
+            'set.colors.std': 'Standard (green / red)',
+            'set.colors.cb': 'Color-blind friendly (blue / orange)',
+            'set.feedback': 'Answer feedback during a test',
+            'set.feedback.desc': '<strong>After each question:</strong> see right away whether you were correct, plus the explanation (Basis). <strong>At the end:</strong> exam style; answers and explanations appear in the review.',
+            'set.feedback.inst': 'After each question',
+            'set.feedback.exam': 'At the end (exam)',
+            'set.motion': 'Motion',
+            'set.reduce': 'Reduce animations',
+            'set.reset': 'Reset to defaults',
+            'set.done': 'Done',
+            'an.title': 'Historical analysis',
+            'an.close': 'Close analytics',
+            'an.filter': 'Filter by user',
+            'an.allusers': 'All users',
+            'an.refresh': 'Refresh',
+            'an.loading': 'Loading analytics',
+            'an.error': 'Could not load analytics data. Please try again.',
+            'an.sessions': 'Total sessions',
+            'an.avg': 'Average score',
+            'an.answered': 'Questions answered',
+            'an.progress': 'Score progress',
+            'an.chartfail': 'Chart library could not be loaded. Topic performance is still shown below.',
+            'an.topics': 'Topic performance',
+            'an.nodata': 'No data yet.',
+            'an.testn': 'Test {n}',
+            'an.scorelabel': 'Score (%)'
+        },
+        uz: {
+            'doc.title': 'Professional baholash platformasi',
+            'brand': 'Baholash platformasi',
+            'lang.label': 'Til',
+            'skip': "Asosiy qismga o'tish",
+            'btn.analytics': 'Statistika',
+            'btn.settings': "Ko'rinish va qulaylik sozlamalari",
+            'btn.theme.state': "Mavzu: {name}. O'zgartirish uchun bosing.",
+            'theme.dark': "Qorong'i",
+            'theme.light': "Yorug'",
+            'theme.contrast': 'Yuqori kontrast',
+            'loading': "Savollar bazasi yuklanmoqda…",
+            'err.title': "Savollar bazasini yuklab bo'lmadi",
+            'err.text': "Internet aloqasini tekshirib, qayta urinib ko'ring.",
+            'retry': 'Qayta urinish',
+            'start.title': 'Onlayn test platformasi',
+            'start.sub': "Ismingizni kiriting, manba va mavzularni tanlang, so'ng savollar sonini belgilang.",
+            'name.label': "To'liq ism",
+            'name.ph': 'masalan, Aziz Karimov',
+            'count.label': 'Savollar soni',
+            'count.quick': 'Savollar sonini tezkor tanlash',
+            'count.all': 'Hammasi',
+            'hint': 'Mavjud: <strong>{n}</strong> · Vaqt: <strong>{m}</strong> daq. ({per})',
+            'per': 'har bir savolga {m} daqiqa',
+            'source.label': 'Manba',
+            'source.all': 'Barcha manbalar',
+            'source.mock': 'MOCK test',
+            'topics.legend': 'Mavzular',
+            'topics.hint': '(kamida bittasini tanlang)',
+            'topics.all': 'Hammasini tanlash',
+            'topics.clear': 'Tozalash',
+            'mock.title': 'MOCK test (100 ball)',
+            'mock.text': "MOCK test bazadagi barcha {n} ta savolni o'z ichiga oladi. Har bir savolning og'irligi Score bo'yicha belgilanadi va natija 100 ballik shkalaga keltiriladi.",
+            'mock.total': "Savollar: {n} · Jami ball: 100 · Vaqt: {m} daq.",
+            'btn.start': 'Testni boshlash',
+            'start.prep': 'Sessiya tayyorlanmoqda…',
+            'err.name': "Iltimos, to'liq ismingizni kiriting.",
+            'err.topic': 'Kamida bitta mavzuni tanlang.',
+            'err.min': 'Kamida {n} ta savol kerak.',
+            'err.notenough': "Tanlangan mavzularda savollar yetarli emas.",
+            'quiz.kbd': "Klaviatura: tanlash uchun <kbd>1</kbd>–<kbd>4</kbd> yoki <kbd>A</kbd>–<kbd>D</kbd> · tasdiqlash yoki davom etish uchun <kbd>Enter</kbd>",
+            'btn.confirm': 'Javobni tasdiqlash',
+            'confirm.hint': "Javobni tanlang, so'ng tasdiqlang.",
+            'tag.selected': 'Tanlandi',
+            'sr.selected': "{x} varianti tanlandi. Javobni saqlash uchun tasdiqlang.",
+            'quiz.timer': 'Qolgan vaqt',
+            'quiz.progress': 'Test jarayoni',
+            'quiz.options': 'Javob variantlari',
+            'quiz.worth': 'Qiymati: {p} ball',
+            'fb.correct': "To'g'ri!",
+            'fb.wrong': "Noto'g'ri",
+            'fb.answer': "To'g'ri javob: <strong>{x}</strong>",
+            'asos': 'Asos',
+            'asos.none': "Bu savol uchun izoh mavjud emas.",
+            'btn.next': 'Keyingi savol',
+            'btn.finish': "Natijalarni ko'rish",
+            'tag.yc': "Sizning javobingiz · To'g'ri",
+            'tag.yw': "Sizning javobingiz · Noto'g'ri",
+            'tag.correct': "To'g'ri javob",
+            'tag.yours': 'Sizning javobingiz',
+            'sr.recorded': 'Javob qabul qilindi.',
+            'sr.correct': "To'g'ri.",
+            'sr.wrong': "Noto'g'ri. To'g'ri javob: {x}.",
+            'sr.min5': '5 daqiqa qoldi.',
+            'sr.min1': '1 daqiqa qoldi.',
+            'sr.sec': '{n} soniya qoldi.',
+            'sr.done': 'Test yakunlandi. Natija: {p}.',
+            'res.title': 'Test yakunlandi!',
+            'res.saved': "Javoblaringiz natijalar bazasiga yuborildi.",
+            'res.timeout': "Vaqt tugadi. Javob berilmagan savollar noto'g'ri hisoblanadi.",
+            'res.savefail': "Tarmoq xatosi tufayli ba'zi javoblar yuborilmadi.",
+            'res.score': 'Natija',
+            'res.of100': '100 balldan',
+            'res.correct': "To'g'ri",
+            'res.wrong': "Noto'g'ri",
+            'res.skipped': 'Javob berilmagan',
+            'res.time': 'Sarflangan vaqt',
+            'btn.retake': 'Testni qayta topshirish',
+            'btn.viewstats': "Statistikani ko'rish",
+            'review.title': "Javoblarni ko'rib chiqish",
+            'review.filter': 'Javoblarni filtrlash',
+            'filter.all': 'Barchasi',
+            'filter.wrong': "Noto'g'ri",
+            'filter.correct': "To'g'ri",
+            'review.empty': "Bu filtr bo'yicha ko'rsatadigan narsa yo'q.",
+            'review.notans': 'Javob berilmagan',
+            'review.pts': '{p} / {m} ball',
+            'set.title': "Ko'rinish va qulaylik",
+            'set.close': 'Sozlamalarni yopish',
+            'set.theme': 'Mavzu',
+            'set.size': 'Matn o‘lchami',
+            'set.size.normal': 'Oddiy',
+            'set.size.large': 'Katta',
+            'set.size.xl': 'Juda katta',
+            'set.font': 'Shrift',
+            'set.font.desc': "Disleksiya uchun qulay shrift: harflar va so'zlar orasi kengroq.",
+            'set.font.std': 'Standart',
+            'set.font.dys': 'Disleksiya uchun qulay',
+            'set.colors': "Ranglar: to'g'ri / noto'g'ri",
+            'set.colors.desc': "Javoblar har doim belgi va matn yozuvi bilan ham ajratiladi, shuning uchun rang yagona belgi emas.",
+            'set.colors.std': 'Standart (yashil / qizil)',
+            'set.colors.cb': "Rang ko'rligi uchun (ko'k / to'q sariq)",
+            'set.feedback': 'Test davomida javob haqida xabar',
+            'set.feedback.desc': "<strong>Har bir savoldan keyin:</strong> javobingiz to'g'ri yoki noto'g'riligi va asos darhol ko'rsatiladi. <strong>Oxirida:</strong> imtihon tartibida; javoblar va asoslar sharhda chiqadi.",
+            'set.feedback.inst': 'Har bir savoldan keyin',
+            'set.feedback.exam': 'Oxirida (imtihon)',
+            'set.motion': 'Animatsiya',
+            'set.reduce': 'Animatsiyani kamaytirish',
+            'set.reset': 'Standartga qaytarish',
+            'set.done': 'Tayyor',
+            'an.title': 'Tarixiy tahlil',
+            'an.close': 'Statistikani yopish',
+            'an.filter': 'Foydalanuvchi bo‘yicha filtr',
+            'an.allusers': 'Barcha foydalanuvchilar',
+            'an.refresh': 'Yangilash',
+            'an.loading': 'Statistika yuklanmoqda',
+            'an.error': "Statistikani yuklab bo'lmadi. Qayta urinib ko'ring.",
+            'an.sessions': 'Jami sessiyalar',
+            'an.avg': "O'rtacha natija",
+            'an.answered': 'Javob berilgan savollar',
+            'an.progress': 'Natijalar dinamikasi',
+            'an.chartfail': "Grafik kutubxonasini yuklab bo'lmadi. Mavzular bo'yicha natijalar pastda ko'rsatilgan.",
+            'an.topics': "Mavzular bo'yicha natijalar",
+            'an.nodata': "Hozircha ma'lumot yo'q.",
+            'an.testn': 'Test {n}',
+            'an.scorelabel': 'Natija (%)'
+        },
+        ru: {
+            'doc.title': 'Профессиональная платформа тестирования',
+            'brand': 'Платформа тестирования',
+            'lang.label': 'Язык',
+            'skip': 'Перейти к содержанию',
+            'btn.analytics': 'Статистика',
+            'btn.settings': 'Экран и доступность',
+            'btn.theme.state': 'Тема: {name}. Нажмите, чтобы сменить.',
+            'theme.dark': 'Тёмная',
+            'theme.light': 'Светлая',
+            'theme.contrast': 'Высокий контраст',
+            'loading': 'Загрузка базы вопросов…',
+            'err.title': 'Не удалось загрузить базу вопросов',
+            'err.text': 'Проверьте подключение к интернету и попробуйте снова.',
+            'retry': 'Повторить',
+            'start.title': 'Онлайн-платформа тестирования',
+            'start.sub': 'Введите имя, выберите источник и темы, затем укажите количество вопросов.',
+            'name.label': 'Полное имя',
+            'name.ph': 'например, Азиз Каримов',
+            'count.label': 'Количество вопросов',
+            'count.quick': 'Быстрый выбор количества вопросов',
+            'count.all': 'Все',
+            'hint': 'Доступно: <strong>{n}</strong> · Время: <strong>{m}</strong> мин ({per})',
+            'per': '{m} мин на вопрос',
+            'source.label': 'Источник',
+            'source.all': 'Все источники',
+            'source.mock': 'MOCK-тест',
+            'topics.legend': 'Темы',
+            'topics.hint': '(выберите хотя бы одну)',
+            'topics.all': 'Выбрать все',
+            'topics.clear': 'Очистить',
+            'mock.title': 'MOCK-тест (100 баллов)',
+            'mock.text': 'MOCK-тест включает все {n} вопросов базы. Вес каждого вопроса задаётся полем Score, результат приводится к шкале 100 баллов.',
+            'mock.total': 'Вопросов: {n} · Всего баллов: 100 · Время: {m} мин',
+            'btn.start': 'Начать тест',
+            'start.prep': 'Подготовка сессии…',
+            'err.name': 'Пожалуйста, введите полное имя.',
+            'err.topic': 'Выберите хотя бы одну тему.',
+            'err.min': 'Нужно минимум {n} вопросов.',
+            'err.notenough': 'В выбранных темах недостаточно вопросов.',
+            'quiz.kbd': 'Клавиатура: выбор — <kbd>1</kbd>–<kbd>4</kbd> или <kbd>A</kbd>–<kbd>D</kbd> · подтвердить или продолжить — <kbd>Enter</kbd>',
+            'btn.confirm': 'Подтвердить ответ',
+            'confirm.hint': 'Выберите ответ, затем подтвердите его.',
+            'tag.selected': 'Выбрано',
+            'sr.selected': 'Вариант {x} выбран. Подтвердите ответ, чтобы сохранить его.',
+            'quiz.timer': 'Осталось времени',
+            'quiz.progress': 'Прогресс теста',
+            'quiz.options': 'Варианты ответа',
+            'quiz.worth': 'Стоимость: {p} балл.',
+            'fb.correct': 'Верно!',
+            'fb.wrong': 'Неверно',
+            'fb.answer': 'Правильный ответ: <strong>{x}</strong>',
+            'asos': 'Основание',
+            'asos.none': 'Пояснение к этому вопросу отсутствует.',
+            'btn.next': 'Следующий вопрос',
+            'btn.finish': 'Посмотреть результаты',
+            'tag.yc': 'Ваш ответ · верно',
+            'tag.yw': 'Ваш ответ · неверно',
+            'tag.correct': 'Правильный ответ',
+            'tag.yours': 'Ваш ответ',
+            'sr.recorded': 'Ответ записан.',
+            'sr.correct': 'Верно.',
+            'sr.wrong': 'Неверно. Правильный ответ: {x}.',
+            'sr.min5': 'Осталось 5 минут.',
+            'sr.min1': 'Осталась 1 минута.',
+            'sr.sec': 'Осталось {n} сек.',
+            'sr.done': 'Тест завершён. Результат: {p}.',
+            'res.title': 'Тест завершён!',
+            'res.saved': 'Ваши ответы отправлены в базу результатов.',
+            'res.timeout': 'Время вышло. Вопросы без ответа засчитываются как неверные.',
+            'res.savefail': 'Из-за ошибки сети часть ответов не отправлена.',
+            'res.score': 'Результат',
+            'res.of100': 'из 100 баллов',
+            'res.correct': 'Верно',
+            'res.wrong': 'Неверно',
+            'res.skipped': 'Без ответа',
+            'res.time': 'Затрачено времени',
+            'btn.retake': 'Пройти тест снова',
+            'btn.viewstats': 'Посмотреть статистику',
+            'review.title': 'Разбор ответов',
+            'review.filter': 'Фильтр ответов',
+            'filter.all': 'Все',
+            'filter.wrong': 'Неверные',
+            'filter.correct': 'Верные',
+            'review.empty': 'По этому фильтру ничего нет.',
+            'review.notans': 'Нет ответа',
+            'review.pts': '{p} / {m} балл.',
+            'set.title': 'Экран и доступность',
+            'set.close': 'Закрыть настройки',
+            'set.theme': 'Тема',
+            'set.size': 'Размер текста',
+            'set.size.normal': 'Обычный',
+            'set.size.large': 'Крупный',
+            'set.size.xl': 'Очень крупный',
+            'set.font': 'Шрифт',
+            'set.font.desc': 'Шрифт для дислексии: более простое начертание и увеличенные интервалы между буквами и словами.',
+            'set.font.std': 'Стандартный',
+            'set.font.dys': 'Для дислексии',
+            'set.colors': 'Цвета: верно / неверно',
+            'set.colors.desc': 'Ответы всегда помечаются значком и подписью, поэтому цвет не является единственным признаком.',
+            'set.colors.std': 'Стандартные (зелёный / красный)',
+            'set.colors.cb': 'Для дальтоников (синий / оранжевый)',
+            'set.feedback': 'Отображение ответов во время теста',
+            'set.feedback.desc': '<strong>После каждого вопроса:</strong> сразу видно, верен ли ответ, и пояснение (Основание). <strong>В конце:</strong> режим экзамена; ответы и пояснения — в разборе.',
+            'set.feedback.inst': 'После каждого вопроса',
+            'set.feedback.exam': 'В конце (экзамен)',
+            'set.motion': 'Анимация',
+            'set.reduce': 'Уменьшить анимацию',
+            'set.reset': 'Сбросить настройки',
+            'set.done': 'Готово',
+            'an.title': 'Историческая статистика',
+            'an.close': 'Закрыть статистику',
+            'an.filter': 'Фильтр по пользователю',
+            'an.allusers': 'Все пользователи',
+            'an.refresh': 'Обновить',
+            'an.loading': 'Загрузка статистики',
+            'an.error': 'Не удалось загрузить статистику. Попробуйте снова.',
+            'an.sessions': 'Всего сессий',
+            'an.avg': 'Средний результат',
+            'an.answered': 'Отвечено вопросов',
+            'an.progress': 'Динамика результатов',
+            'an.chartfail': 'Не удалось загрузить библиотеку графиков. Результаты по темам показаны ниже.',
+            'an.topics': 'Результаты по темам',
+            'an.nodata': 'Данных пока нет.',
+            'an.testn': 'Тест {n}',
+            'an.scorelabel': 'Результат (%)'
+        }
+    };
+
+    let lang = DEFAULT_LANG;
+    function t(key, vars) {
+        let s = (I18N[lang] && I18N[lang][key] !== undefined) ? I18N[lang][key] : (I18N.en[key] !== undefined ? I18N.en[key] : key);
+        if (vars) Object.keys(vars).forEach(k => { s = s.split('{' + k + '}').join(String(vars[k])); });
+        return s;
+    }
+
+    /* =========================================================
+       DISPLAY SETTINGS (kept in memory only)
        ========================================================= */
     function defaultSettings() {
         return {
@@ -929,14 +1347,21 @@
     /* =========================================================
        STATE
        ========================================================= */
-    let themesMap = {};
+    let bank = [];                 // all questions (every language inside)
+    let themeNames = {};           // en theme -> {en, uz, ru}
+    let sourceNames = {};          // en source -> {en, uz, ru}
+    let sourceList = [];           // en source names, in data order
+    let MOCK_TOTAL = 0;            // sum of all Score values (used to scale MOCK to 100)
+    let topicChecked = new Set();  // en theme names the user ticked (kept across source changes)
     let quizSet = [];
-    let answers = [];
-    let userData = { name: '', count: 0, testID: null };
-    let currentIdx = 0, currentOptions = [], currentCorrectIdx = -1;
-    let locked = false, quizActive = false;
+    let answers = [];              // per question: {key, isCorrect, mode, pts, time} or null
+    let userData = { name: '', count: 0, mock: false, testID: null };
+    let currentIdx = 0;
+    let pendingIdx = null;         // option picked but not confirmed yet
+    let quizActive = false;
     let questionStart = 0, timeLeft = 0, totalTime = 0, timerId = null;
     let saveFailures = 0, reviewFilter = 'all';
+    let resultState = null, formErr = null;
     let rawDashboardData = [], chartInst = null, lastFocus = null;
 
     const $ = id => document.getElementById(id);
@@ -944,6 +1369,8 @@
     /* =========================================================
        HELPERS
        ========================================================= */
+    const str = v => (v === null || v === undefined) ? '' : String(v).trim();
+
     function escapeHTML(s) {
         return String(s ?? '').replace(/[&<>"']/g, c => ({
             '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -965,9 +1392,13 @@
         return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
     }
 
+    function fmtPts(x) {
+        return String(Math.round(x * 100) / 100);
+    }
+
     // Decimal fractions (0.3, 0.05) are shown as percentages (30%, 5%)
     function formatOption(txt) {
-        const s = String(txt ?? '').trim();
+        const s = str(txt);
         if (s === '') return '';
         if (/^0?\.\d+$/.test(s)) {
             const n = parseFloat(s);
@@ -976,11 +1407,11 @@
         return s;
     }
 
-    // Handles "Asos: ...", "(Asos: ...)." and plain explanation text
+    // Removes the label at the start of the explanation: "Asos:", "(Asos: ...).", "Rationale:", "Основание:", "Обоснование:"
     function cleanExplanation(main) {
-        let s = String(main ?? '').trim();
-        const wrapped = /^\(\s*asos\s*:/i.test(s);
-        s = s.replace(/^\(?\s*asos\s*:\s*/i, '');
+        let s = str(main);
+        const wrapped = /^\(\s*(asos|rationale|основание|обоснование)\s*:/i.test(s);
+        s = s.replace(/^\(?\s*(asos|rationale|основание|обоснование)\s*:\s*/i, '');
         if (wrapped) s = s.replace(/\)\s*\.?\s*$/, '.');
         return s.trim();
     }
@@ -1001,40 +1432,69 @@
             .join('');
     }
 
-    function normalizeRow(r) {
-        if (!r || typeof r !== 'object') return null;
-        const question = String(r.Question ?? '').trim();
-        const correct = String(r['True answer'] ?? '').trim();
-        if (!question || !correct) return null;
-        return {
-            Question_ID: r.Question_ID ?? '',
-            Theme: String(r.Theme ?? '').trim() || 'General',
-            Question: question,
-            A: String(r.A ?? '').trim(),
-            B: String(r.B ?? '').trim(),
-            C: String(r.C ?? '').trim(),
-            D: String(r.D ?? '').trim(),
-            'True answer': correct,
-            main: String(r.main ?? '')
-        };
+    const ptsOf = q => userData.mock ? (q.score / MOCK_TOTAL * 100) : 1;
+    const themeLabel = en => (themeNames[en] && themeNames[en][lang]) || en;
+    const sourceLabel = en => (sourceNames[en] && sourceNames[en][lang]) || en;
+    const isMock = () => currentSourceValue() === 'mock';
+
+    /* =========================================================
+       DATABASE -> QUESTIONS
+       Supports the new format {en: [...], uz: [...], ru: [...]}
+       and the old flat array (treated as English only).
+       ========================================================= */
+    function buildBank(raw) {
+        const byLang = Array.isArray(raw) ? { en: raw } : (raw || {});
+        const index = {};
+        LANGS.forEach(l => {
+            index[l] = new Map();
+            (Array.isArray(byLang[l]) ? byLang[l] : []).forEach(r => {
+                if (r && str(r.Question_ID)) index[l].set(str(r.Question_ID), r);
+            });
+        });
+
+        const out = [];
+        (Array.isArray(byLang.en) ? byLang.en : []).forEach(enRow => {
+            const id = str(enRow.Question_ID);
+            if (!id) return;
+
+            const rows = {};
+            LANGS.forEach(l => { rows[l] = index[l].get(id) || null; });
+
+            // Each field per language; falls back to English when a translation is missing
+            const field = f => {
+                const o = {};
+                LANGS.forEach(l => {
+                    const v = rows[l] ? str(rows[l][f]) : '';
+                    o[l] = v || str(enRow[f]);
+                });
+                return o;
+            };
+
+            const correctText = str(enRow['True answer']);
+            const optKeys = ['A', 'B', 'C', 'D'].filter(k => str(enRow[k]) !== '');
+            const exact = optKeys.filter(k => str(enRow[k]) === correctText);
+            if (!correctText || exact.length !== 1) {
+                console.warn('Question skipped (correct option not unique):', id);
+                return;
+            }
+
+            out.push({
+                id,
+                score: Number(enRow.Score) > 0 ? Number(enRow.Score) : 1,
+                theme: field('Theme'),
+                source: field('Source'),
+                text: field('Question'),
+                main: field('main'),
+                ta: field('True answer'),
+                opts: optKeys.map(k => ({ k, t: field(k) })),
+                correctKey: exact[0]
+            });
+        });
+        return out;
     }
 
-    function getOptions(q) {
-        return ['A', 'B', 'C', 'D']
-            .map(k => ({ k, t: q[k] }))
-            .filter(o => o.t !== '');
-    }
-
-    function selectedTopics() {
-        return [...document.querySelectorAll('.topic-check:checked')].map(c => c.value);
-    }
-
-    function totalAvailable() {
-        return selectedTopics().reduce((n, t) => n + (themesMap[t] ? themesMap[t].length : 0), 0);
-    }
-
-    function toneOf(p) {
-        return p >= 80 ? 'good' : p >= 50 ? 'warn' : 'bad';
+    function poolFor(src) {
+        return (src === 'all' || src === 'mock') ? bank : bank.filter(q => q.source.en === src);
     }
 
     /* =========================================================
@@ -1077,7 +1537,7 @@
     }
 
     /* =========================================================
-       DISPLAY SETTINGS
+       DISPLAY SETTINGS APPLY
        ========================================================= */
     function applySettings() {
         const h = document.documentElement;
@@ -1094,9 +1554,10 @@
         });
 
         const btn = $('btn-theme');
+        const name = t(THEME_KEY[settings.theme]);
         btn.innerHTML = `<i class="fas ${THEME_ICON[settings.theme]}" aria-hidden="true"></i>`;
-        btn.setAttribute('aria-label', `Theme: ${THEME_LABEL[settings.theme]}. Click to change.`);
-        btn.title = `Theme: ${THEME_LABEL[settings.theme]}`;
+        btn.setAttribute('aria-label', t('btn.theme.state', { name }));
+        btn.title = name;
 
         updateChartTheme();
     }
@@ -1119,7 +1580,37 @@
     }
 
     /* =========================================================
-       DATABASE & TOPICS
+       LANGUAGE
+       ========================================================= */
+    function applyStaticI18n() {
+        document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+        document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+        document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+        document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
+        document.title = t('doc.title');
+    }
+
+    function setLang(l) {
+        lang = LANGS.includes(l) ? l : DEFAULT_LANG;
+        document.documentElement.lang = lang;
+        $('lang-select').value = lang;
+        applyStaticI18n();
+        renderSourceOptions();
+        renderTopics();
+        updateTotals();
+        renderMockPanel();
+        applySettings();
+        renderFormError();
+        if (quizActive) renderQuestion(true);
+        if (resultState) renderResult();
+        if (rawDashboardData.length) {
+            populateNameFilter(rawDashboardData);
+            renderAnalytics(filteredRows());
+        }
+    }
+
+    /* =========================================================
+       DATABASE LOAD
        ========================================================= */
     async function loadDatabase() {
         showScreen('screen-loading');
@@ -1127,7 +1618,6 @@
             const res = await fetch(DB_URL, { cache: 'no-cache' });
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const raw = await res.json();
-            if (!Array.isArray(raw)) throw new Error('Unexpected database format');
             processDB(raw);
         } catch (err) {
             console.error('Database load failed:', err);
@@ -1136,70 +1626,162 @@
     }
 
     function processDB(raw) {
-        const rows = raw.map(normalizeRow).filter(Boolean);
-        if (!rows.length) throw new Error('No valid questions found');
-        themesMap = {};
-        rows.forEach(q => {
-            if (!themesMap[q.Theme]) themesMap[q.Theme] = [];
-            themesMap[q.Theme].push(q);
+        bank = buildBank(raw);
+        if (!bank.length) throw new Error('No valid questions found');
+
+        themeNames = {};
+        sourceNames = {};
+        sourceList = [];
+        bank.forEach(q => {
+            if (!themeNames[q.theme.en]) themeNames[q.theme.en] = q.theme;
+            if (!sourceNames[q.source.en]) {
+                sourceNames[q.source.en] = q.source;
+                sourceList.push(q.source.en);
+            }
         });
+        MOCK_TOTAL = bank.reduce((s, q) => s + q.score, 0);
+
+        renderSourceOptions();
         renderTopics();
+        updateTotals();
+        renderMockPanel();
+        applySourceMode();
         showScreen('screen-start', $('start-title'));
     }
 
-    function renderTopics() {
-        const names = Object.keys(themesMap).sort((a, b) => a.localeCompare(b));
-        $('topic-list').innerHTML = names.map(t => `
-            <label class="topic-item">
-                <input type="checkbox" class="topic-check" value="${escapeHTML(t)}">
-                <span class="topic-name">${escapeHTML(t)}</span>
-                <span class="topic-count notranslate">${themesMap[t].length}</span>
+    /* =========================================================
+       START SCREEN: SOURCE, TOPICS, COUNT
+       ========================================================= */
+    function currentSourceValue() {
+        const r = document.querySelector('input[name="source"]:checked');
+        return r ? r.value : 'all';
+    }
+
+    function renderSourceOptions() {
+        const cur = currentSourceValue();
+        const opts = [['all', t('source.all')]]
+            .concat(sourceList.map(en => [en, sourceLabel(en)]))
+            .concat([['mock', t('source.mock')]]);
+        $('source-group').innerHTML = opts.map(([v, label]) => `
+            <label class="seg-opt">
+                <input type="radio" name="source" value="${escapeHTML(v)}" ${v === cur ? 'checked' : ''}>
+                <span>${escapeHTML(label)}</span>
             </label>`).join('');
-        updateTotals();
+    }
+
+    function applySourceMode() {
+        const mock = isMock();
+        $('topics-panel').hidden = mock;
+        $('mock-panel').hidden = !mock;
+        $('q-count').disabled = mock;
+        document.querySelectorAll('[data-preset]').forEach(b => { b.disabled = mock; });
+    }
+
+    function onSourceChange() {
+        renderTopics();
+        applySourceMode();
+        clampCount();
+    }
+
+    function syncTopicChecked() {
+        document.querySelectorAll('.topic-check').forEach(c => {
+            if (c.checked) topicChecked.add(c.value);
+            else topicChecked.delete(c.value);
+        });
+    }
+
+    function renderTopics() {
+        syncTopicChecked();
+        const counts = new Map();
+        poolFor(currentSourceValue()).forEach(q => counts.set(q.theme.en, (counts.get(q.theme.en) || 0) + 1));
+        const names = [...counts.keys()].sort((a, b) => themeLabel(a).localeCompare(themeLabel(b), lang));
+        $('topic-list').innerHTML = names.map(en => `
+            <label class="topic-item">
+                <input type="checkbox" class="topic-check" value="${escapeHTML(en)}" ${topicChecked.has(en) ? 'checked' : ''}>
+                <span class="topic-name">${escapeHTML(themeLabel(en))}</span>
+                <span class="topic-count notranslate">${counts.get(en)}</span>
+            </label>`).join('');
+    }
+
+    function selectedTopics() {
+        return [...document.querySelectorAll('.topic-check:checked')].map(c => c.value);
+    }
+
+    function totalAvailable() {
+        const sel = new Set(selectedTopics());
+        return poolFor(currentSourceValue()).filter(q => sel.has(q.theme.en)).length;
     }
 
     function setAllTopics(val) {
         document.querySelectorAll('.topic-check').forEach(c => { c.checked = val; });
+        syncTopicChecked();
         clampCount();
     }
 
+    function renderMockPanel() {
+        $('mock-text').textContent = t('mock.text', { n: bank.length });
+        $('mock-total').textContent = t('mock.total', {
+            n: bank.length,
+            m: Math.round(bank.length * SECONDS_PER_QUESTION / 60)
+        });
+    }
+
     function updateTotals() {
-        const total = totalAvailable();
         const inp = $('q-count');
+        const mock = isMock();
+        let total;
+        if (mock) {
+            total = bank.length;
+            inp.value = total;
+            inp.removeAttribute('max');
+        } else {
+            total = totalAvailable();
+            if (total) inp.max = total; else inp.removeAttribute('max');
+        }
         const v = parseInt(inp.value, 10) || 0;
-        $('dyn-total').textContent = total;
-        if (total) inp.max = total; else inp.removeAttribute('max');
-        $('est-time').textContent = Math.round(v * SECONDS_PER_QUESTION / 60);
+        $('count-hint').innerHTML = t('hint', {
+            n: total,
+            m: Math.round(v * SECONDS_PER_QUESTION / 60),
+            per: t('per', { m: SECONDS_PER_QUESTION / 60 })
+        });
         document.querySelectorAll('[data-preset]').forEach(b => {
             const target = b.dataset.preset === 'max' ? total : Number(b.dataset.preset);
-            b.setAttribute('aria-pressed', String(total > 0 && target > 0 && v === target));
+            b.setAttribute('aria-pressed', String(!mock && total > 0 && target === v));
         });
     }
 
     function clampCount() {
-        const total = totalAvailable();
-        const inp = $('q-count');
-        const v = parseInt(inp.value, 10);
-        if (total && v > total) inp.value = total;
+        if (!isMock()) {
+            const total = totalAvailable();
+            const inp = $('q-count');
+            const v = parseInt(inp.value, 10);
+            if (total && v > total) inp.value = total;
+        }
         updateTotals();
     }
 
     function applyPreset(p) {
+        if (isMock()) return;
         const total = totalAvailable();
         const n = p === 'max' ? total : Number(p);
         $('q-count').value = total ? Math.min(n, total) : n;
         updateTotals();
     }
 
-    function showFormError(msg, focusEl) {
-        const box = $('form-error');
-        box.textContent = msg;
-        box.hidden = false;
+    function showFormError(key, vars, focusEl) {
+        formErr = { key, vars };
+        renderFormError();
         if (focusEl) focusEl.focus();
     }
-
+    function renderFormError() {
+        const box = $('form-error');
+        if (!formErr) { box.hidden = true; return; }
+        box.textContent = t(formErr.key, formErr.vars);
+        box.hidden = false;
+    }
     function hideFormError() {
-        $('form-error').hidden = true;
+        formErr = null;
+        renderFormError();
     }
 
     /* =========================================================
@@ -1208,15 +1790,22 @@
     async function startTest() {
         hideFormError();
         const name = $('username').value.trim();
-        const count = parseInt($('q-count').value, 10);
-        const topics = selectedTopics();
+        if (!name) return showFormError('err.name', {}, $('username'));
 
-        if (!name) return showFormError('Please enter your full name.', $('username'));
-        if (!topics.length) return showFormError('Select at least one topic.', document.querySelector('.topic-check'));
-        if (!Number.isInteger(count) || count < MIN_QUESTIONS) return showFormError(`Minimum ${MIN_QUESTIONS} questions required.`, $('q-count'));
+        const mock = isMock();
+        let pool, count;
 
-        const pool = shuffle(topics.flatMap(t => themesMap[t]));
-        if (count > pool.length) return showFormError('Not enough questions in the selected topics.', $('q-count'));
+        if (mock) {
+            pool = bank.slice();
+            count = pool.length;
+        } else {
+            const topics = new Set(selectedTopics());
+            count = parseInt($('q-count').value, 10);
+            if (!topics.size) return showFormError('err.topic', {}, document.querySelector('.topic-check'));
+            if (!Number.isInteger(count) || count < MIN_QUESTIONS) return showFormError('err.min', { n: MIN_QUESTIONS }, $('q-count'));
+            pool = poolFor(currentSourceValue()).filter(q => topics.has(q.theme.en));
+            if (count > pool.length) return showFormError('err.notenough', {}, $('q-count'));
+        }
 
         $('btn-start').disabled = true;
         $('start-msg').hidden = false;
@@ -1224,10 +1813,13 @@
         $('btn-start').disabled = false;
         $('start-msg').hidden = true;
 
-        userData = { name, count, testID: `${Date.now()}_${Math.floor(Math.random() * 1000)}` };
-        quizSet = pool.slice(0, count);
+        userData = { name, count, mock, testID: `${Date.now()}_${Math.floor(Math.random() * 1000)}` };
+        quizSet = shuffle(pool).slice(0, count);
         answers = new Array(count).fill(null);
+        pendingIdx = null;
+        resultState = null;
         saveFailures = 0;
+        reviewFilter = 'all';
         totalTime = timeLeft = count * SECONDS_PER_QUESTION;
         quizActive = true;
 
@@ -1237,105 +1829,78 @@
         loadQ(0);
     }
 
+    /* =========================================================
+       QUESTION RENDERING (re-rendered on language change)
+       ========================================================= */
     function loadQ(idx) {
-        const q = quizSet[idx];
         currentIdx = idx;
-        locked = false;
+        pendingIdx = null;
         questionStart = Date.now();
-        currentOptions = getOptions(q);
-        currentCorrectIdx = currentOptions.findIndex(o => o.t === q['True answer']);
-
-        $('q-theme').textContent = q.Theme;
-        $('q-counter').textContent = `${idx + 1} / ${userData.count}`;
-        $('q-text').innerHTML = formatQuestionHTML(q.Question);
-
         const pct = Math.round(idx / userData.count * 100);
         $('progress-fill').style.width = pct + '%';
         $('progress').setAttribute('aria-valuenow', String(pct));
+        renderQuestion(false);
+    }
 
-        $('options').classList.remove('answered');
-        $('options').innerHTML = currentOptions.map((o, i) => `
-            <button type="button" class="option" data-idx="${i}">
+    function renderQuestion(isRefresh) {
+        const q = quizSet[currentIdx];
+        const a = answers[currentIdx];
+
+        $('q-source').textContent = userData.mock ? t('source.mock') : sourceLabel(q.source.en);
+        $('q-theme').textContent = q.theme[lang];
+        $('q-counter').textContent = `${currentIdx + 1} / ${userData.count}`;
+
+        const worth = $('q-worth');
+        worth.hidden = !userData.mock;
+        if (userData.mock) worth.textContent = t('quiz.worth', { p: fmtPts(ptsOf(q)) });
+
+        $('q-text').innerHTML = formatQuestionHTML(q.text[lang]);
+
+        $('options').innerHTML = q.opts.map((o, i) => `
+            <button type="button" class="option" data-idx="${i}" aria-pressed="false">
                 <span class="option-key notranslate">${escapeHTML(o.k)}</span>
-                <span class="option-text">${escapeHTML(formatOption(o.t))}</span>
+                <span class="option-text">${escapeHTML(formatOption(o.t[lang]))}</span>
                 <span class="option-mark"></span>
             </button>`).join('');
 
         $('feedback').hidden = true;
-        $('q-text').focus();
-
-        // Keep Google Translate in sync (kept from the original)
-        setTimeout(() => {
-            const c = document.querySelector('.goog-te-combo');
-            if (c && c.value !== 'en') {
-                const old = c.value;
-                c.value = 'en'; c.dispatchEvent(new Event('change'));
-                setTimeout(() => { c.value = old; c.dispatchEvent(new Event('change')); }, 50);
-            }
-        }, 150);
-    }
-
-    function answer(idx) {
-        if (!quizActive || locked) return;
-        const opt = currentOptions[idx];
-        if (!opt) return;
-        locked = true;
-
-        const q = quizSet[currentIdx];
-        const correctText = q['True answer'];
-        const isCorrect = idx === currentCorrectIdx;
-        const elapsed = ((Date.now() - questionStart) / 1000).toFixed(1);
-
-        answers[currentIdx] = {
-            selectedLabel: formatOption(opt.t),
-            correctLabel: formatOption(correctText),
-            explanation: cleanExplanation(q.main),
-            question: q.Question,
-            isCorrect
-        };
-
-        saveAnswerImmediately({
-            id: userData.testID,
-            name: userData.name,
-            theme: q.Theme,
-            question: q.Question,
-            selected: opt.t,
-            correct: correctText,
-            time: elapsed
-        });
-
-        markOptions(idx);
-
-        if (settings.feedback === 'instant') {
-            showFeedback(isCorrect, q);
-        } else {
-            srLive('Answer recorded.');
-            setTimeout(nextQuestion, 350);
+        if (a) {
+            applyOptionMarks(a);
+            if (a.mode === 'instant') showFeedbackContent(a.isCorrect, q);
+        } else if (pendingIdx !== null) {
+            applyPendingMarks();
         }
+        updateConfirm();
+        if (!isRefresh) $('q-text').focus();
     }
 
-    function markOptions(selIdx) {
-        const instant = settings.feedback === 'instant';
+    function applyOptionMarks(a) {
+        const q = quizSet[currentIdx];
+        const instant = a.mode === 'instant';
+        const correctIdx = q.opts.findIndex(o => o.k === q.correctKey);
+        const selIdx = q.opts.findIndex(o => o.k === a.key);
         const box = $('options');
         box.classList.add('answered');
+
         box.querySelectorAll('.option').forEach((b, i) => {
             b.disabled = true;
+            b.setAttribute('aria-pressed', String(i === selIdx));
             b.classList.remove('is-correct', 'is-wrong', 'is-selected');
             let icon = '', tag = '';
             if (instant) {
-                if (i === currentCorrectIdx) {
+                if (i === correctIdx) {
                     b.classList.add('is-correct');
                     icon = 'fa-circle-check';
-                    tag = i === selIdx ? 'Your answer · Correct' : 'Correct answer';
+                    tag = i === selIdx ? t('tag.yc') : t('tag.correct');
                 } else if (i === selIdx) {
                     b.classList.add('is-wrong');
                     icon = 'fa-circle-xmark';
-                    tag = 'Your answer · Incorrect';
+                    tag = t('tag.yw');
                 }
             } else if (i === selIdx) {
                 b.classList.add('is-selected');
                 icon = 'fa-circle-dot';
-                tag = 'Your answer';
+                tag = t('tag.yours');
             }
             b.querySelector('.option-mark').innerHTML = tag
                 ? `${icon ? `<i class="fas ${icon}" aria-hidden="true"></i>` : ''}<span class="option-tag">${escapeHTML(tag)}</span>`
@@ -1343,30 +1908,93 @@
         });
     }
 
-    function showFeedback(isCorrect, q) {
+    function showFeedbackContent(isCorrect, q) {
         const fb = $('feedback');
         fb.className = 'feedback ' + (isCorrect ? 'is-correct' : 'is-wrong');
         fb.hidden = false;
 
         $('fb-title').innerHTML = isCorrect
-            ? '<i class="fas fa-circle-check" aria-hidden="true"></i> Correct!'
-            : '<i class="fas fa-circle-xmark" aria-hidden="true"></i> Incorrect';
+            ? `<i class="fas fa-circle-check" aria-hidden="true"></i> ${escapeHTML(t('fb.correct'))}`
+            : `<i class="fas fa-circle-xmark" aria-hidden="true"></i> ${escapeHTML(t('fb.wrong'))}`;
         $('fb-answer').innerHTML = isCorrect
             ? ''
-            : `The correct answer is <strong>${escapeHTML(formatOption(q['True answer']))}</strong>`;
+            : t('fb.answer', { x: escapeHTML(formatOption(q.ta[lang])) });
 
-        const exp = cleanExplanation(q.main);
+        const exp = cleanExplanation(q.main[lang]);
         const asos = $('fb-asos');
-        asos.textContent = exp || 'No explanation is available for this question.';
+        asos.textContent = exp || t('asos.none');
         asos.classList.toggle('muted', !exp);
 
         const last = currentIdx + 1 >= userData.count;
         $('btn-next').innerHTML = last
-            ? 'See results <i class="fas fa-flag-checkered" aria-hidden="true"></i>'
-            : 'Next question <i class="fas fa-arrow-right" aria-hidden="true"></i>';
+            ? `${escapeHTML(t('btn.finish'))} <i class="fas fa-flag-checkered" aria-hidden="true"></i>`
+            : `${escapeHTML(t('btn.next'))} <i class="fas fa-arrow-right" aria-hidden="true"></i>`;
+    }
 
-        srLive(isCorrect ? 'Correct.' : `Incorrect. The correct answer is ${formatOption(q['True answer'])}.`);
-        $('btn-next').focus();
+    // Clicking/pressing a key only PICKS an option; nothing is saved until "Confirm" is pressed
+    function selectOption(idx) {
+        if (!quizActive || answers[currentIdx]) return;
+        const q = quizSet[currentIdx];
+        if (!q.opts[idx]) return;
+        pendingIdx = idx;
+        applyPendingMarks();
+        updateConfirm();
+        srLive(t('sr.selected', { x: q.opts[idx].k }));
+    }
+
+    // Marks the option the user picked but has not confirmed yet
+    function applyPendingMarks() {
+        $('options').querySelectorAll('.option').forEach((b, i) => {
+            const on = i === pendingIdx;
+            b.classList.toggle('is-selected', on);
+            b.setAttribute('aria-pressed', String(on));
+            b.querySelector('.option-mark').innerHTML = on
+                ? `<i class="fas fa-circle-dot" aria-hidden="true"></i><span class="option-tag">${escapeHTML(t('tag.selected'))}</span>`
+                : '';
+        });
+    }
+
+    // Confirm bar is visible only while the question is open; the button is active only after a pick
+    function updateConfirm() {
+        const open = quizActive && !answers[currentIdx];
+        $('confirm-bar').hidden = !open;
+        $('btn-confirm').disabled = pendingIdx === null;
+        $('confirm-hint').hidden = pendingIdx !== null;
+    }
+
+    function confirmAnswer() {
+        if (!quizActive || answers[currentIdx] || pendingIdx === null) return;
+        const q = quizSet[currentIdx];
+        const opt = q.opts[pendingIdx];
+        const isCorrect = opt.k === q.correctKey;
+        const elapsed = ((Date.now() - questionStart) / 1000).toFixed(1);
+        const a = { key: opt.k, isCorrect, mode: settings.feedback, pts: isCorrect ? ptsOf(q) : 0, time: elapsed };
+        answers[currentIdx] = a;
+        pendingIdx = null;
+
+        // Payload keeps the same fields as before; theme is always stored in English
+        // so that analytics group topics the same way whatever language was used.
+        saveAnswerImmediately({
+            id: userData.testID,
+            name: userData.name,
+            theme: q.theme.en,
+            question: q.text[lang],
+            selected: opt.t[lang],
+            correct: q.ta[lang],
+            time: elapsed
+        });
+
+        applyOptionMarks(a);
+        updateConfirm();
+
+        if (a.mode === 'instant') {
+            showFeedbackContent(isCorrect, q);
+            $('btn-next').focus();
+            srLive(isCorrect ? t('sr.correct') : t('sr.wrong', { x: formatOption(q.ta[lang]) }));
+        } else {
+            srLive(t('sr.recorded'));
+            nextQuestion();
+        }
     }
 
     function nextQuestion() {
@@ -1405,9 +2033,9 @@
     function tick() {
         timeLeft -= 1;
         renderTimer();
-        if (timeLeft === 300) srLive('5 minutes remaining.');
-        else if (timeLeft === 60) srLive('1 minute remaining.');
-        else if (timeLeft === 30 || timeLeft === 10) srLive(`${timeLeft} seconds remaining.`);
+        if (timeLeft === 300) srLive(t('sr.min5'));
+        else if (timeLeft === 60) srLive(t('sr.min1'));
+        else if (timeLeft === 30 || timeLeft === 10) srLive(t('sr.sec', { n: timeLeft }));
         if (timeLeft <= 0) finishTest('timeout');
     }
 
@@ -1419,67 +2047,99 @@
     /* =========================================================
        RESULTS & REVIEW
        ========================================================= */
-    function renderRing(percent) {
+    function renderRing(value) {
         const ring = $('score-ring');
-        const color = percent >= 80 ? 'var(--good)' : percent >= 50 ? 'var(--warn)' : 'var(--bad)';
+        const color = value >= 80 ? 'var(--good)' : value >= 50 ? 'var(--warn)' : 'var(--bad)';
         ring.style.setProperty('--ring', color);
-        ring.setAttribute('aria-label', `Score ${percent} percent`);
-        $('ring-fg').setAttribute('stroke-dashoffset', String(100 - percent));
-        $('ring-fg').setAttribute('stroke-linecap', percent > 0 ? 'round' : 'butt');
+        $('ring-fg').setAttribute('stroke-dashoffset', String(100 - value));
+        $('ring-fg').setAttribute('stroke-linecap', value > 0 ? 'round' : 'butt');
     }
 
     function finishTest(reason) {
         if (!quizActive) return;
         quizActive = false;
-        locked = true;
+        pendingIdx = null;
         stopTimer();
 
         const total = userData.count;
-        const correct = answers.filter(a => a && a.isCorrect).length;
         const answered = answers.filter(Boolean).length;
-        const percent = total ? Math.round(correct / total * 100) : 0;
-        const used = Math.max(0, totalTime - Math.max(0, timeLeft));
+        const correct = answers.filter(a => a && a.isCorrect).length;
+        const earned = answers.reduce((s, a) => s + (a && a.isCorrect ? a.pts : 0), 0);
 
-        $('final-score').textContent = percent + '%';
-        $('r-correct').textContent = correct;
-        $('r-wrong').textContent = answered - correct;
-        $('r-skipped').textContent = total - answered;
-        $('r-time').textContent = fmtTime(used);
-        $('result-note').hidden = reason !== 'timeout';
-        $('save-warning').hidden = saveFailures === 0;
-        renderRing(percent);
+        resultState = {
+            reason,
+            total,
+            answered,
+            correct,
+            earned,
+            percent: total ? Math.round(correct / total * 100) : 0,
+            usedSec: Math.max(0, totalTime - Math.max(0, timeLeft)),
+            saveFail: saveFailures > 0
+        };
 
-        renderReview('all');
+        renderResult();
         showScreen('screen-result', $('result-title'));
-        srLive(`Test finished. Score ${percent} percent.`);
+        const shown = userData.mock ? `${earned.toFixed(1)} / 100` : `${resultState.percent}%`;
+        srLive(t('sr.done', { p: shown }));
+    }
+
+    function renderResult() {
+        const r = resultState;
+        if (!r) return;
+        const mock = userData.mock;
+
+        $('final-score').textContent = mock ? r.earned.toFixed(1) : r.percent + '%';
+        $('ring-sub').textContent = mock ? t('res.of100') : t('res.score');
+        $('score-ring').setAttribute('aria-label', mock
+            ? `${t('res.score')}: ${r.earned.toFixed(1)} / 100`
+            : `${t('res.score')}: ${r.percent}%`);
+        renderRing(mock ? r.earned : r.percent);
+
+        $('r-correct').textContent = r.correct;
+        $('r-wrong').textContent = r.answered - r.correct;
+        $('r-skipped').textContent = r.total - r.answered;
+        $('r-time').textContent = fmtTime(r.usedSec);
+        $('result-note').hidden = r.reason !== 'timeout';
+        $('save-warning').hidden = !r.saveFail;
+
+        renderReview(reviewFilter);
     }
 
     function reviewItemHTML(i, q, a) {
         const state = !a ? 'skipped' : (a.isCorrect ? 'correct' : 'wrong');
         const [icon, label] = {
-            correct: ['fa-circle-check', 'Correct'],
-            wrong: ['fa-circle-xmark', 'Incorrect'],
-            skipped: ['fa-circle-minus', 'Not answered']
+            correct: ['fa-circle-check', t('res.correct')],
+            wrong: ['fa-circle-xmark', t('res.wrong')],
+            skipped: ['fa-circle-minus', t('res.skipped')]
         }[state];
-        const exp = a ? a.explanation : cleanExplanation(q.main);
-        const yours = a ? escapeHTML(a.selectedLabel) : '<span class="muted">Not answered</span>';
-        const correct = escapeHTML(formatOption(q['True answer']));
+
+        const selOpt = a ? q.opts.find(o => o.k === a.key) : null;
+        const yours = selOpt
+            ? escapeHTML(formatOption(selOpt.t[lang]))
+            : `<span class="muted">${escapeHTML(t('review.notans'))}</span>`;
+        const correct = escapeHTML(formatOption(q.ta[lang]));
+        const exp = cleanExplanation(q.main[lang]);
+
+        const pts = userData.mock
+            ? `<span class="chip chip-pts">${escapeHTML(t('review.pts', { p: fmtPts(a && a.isCorrect ? a.pts : 0), m: fmtPts(ptsOf(q)) }))}</span>`
+            : '';
 
         return `
         <li class="review-item is-${state}">
             <div class="review-head">
                 <span class="qnum notranslate">Q${i + 1}</span>
-                <span class="chip">${escapeHTML(q.Theme)}</span>
-                <span class="status"><i class="fas ${icon}" aria-hidden="true"></i> ${label}</span>
+                <span class="chip">${escapeHTML(q.theme[lang])}</span>
+                ${pts}
+                <span class="status"><i class="fas ${icon}" aria-hidden="true"></i> ${escapeHTML(label)}</span>
             </div>
-            <div class="review-q">${formatQuestionHTML(q.Question)}</div>
+            <div class="review-q">${formatQuestionHTML(q.text[lang])}</div>
             <dl class="review-answers">
-                <div><dt>Your answer</dt><dd>${yours}</dd></div>
-                <div><dt>Correct answer</dt><dd>${correct}</dd></div>
+                <div><dt>${escapeHTML(t('tag.yours'))}</dt><dd>${yours}</dd></div>
+                <div><dt>${escapeHTML(t('tag.correct'))}</dt><dd>${correct}</dd></div>
             </dl>
             <div class="asos">
-                <div class="asos-title"><i class="fas fa-book-open" aria-hidden="true"></i> Asos</div>
-                <p>${exp ? escapeHTML(exp) : '<span class="muted">No explanation is available for this question.</span>'}</p>
+                <div class="asos-title"><i class="fas fa-book-open" aria-hidden="true"></i> ${escapeHTML(t('asos'))}</div>
+                <p class="${exp ? '' : 'muted'}">${exp ? escapeHTML(exp) : escapeHTML(t('asos.none'))}</p>
             </div>
         </li>`;
     }
@@ -1495,18 +2155,19 @@
             const a = answers[i];
             const ok = !!(a && a.isCorrect);
             if (filter === 'correct' && !ok) continue;
-            if (filter === 'wrong' && ok) continue;   // includes unanswered, which count as incorrect
+            if (filter === 'wrong' && ok) continue;   // unanswered count as incorrect
             items.push(reviewItemHTML(i, quizSet[i], a));
         }
         $('review-list').innerHTML = items.length
             ? items.join('')
-            : '<li class="muted center">Nothing to show for this filter.</li>';
+            : `<li class="muted center">${escapeHTML(t('review.empty'))}</li>`;
     }
 
     function backToStart() {
         stopTimer();
         quizActive = false;
-        locked = false;
+        pendingIdx = null;
+        resultState = null;
         showScreen('screen-start', $('start-title'));
         updateTotals();
     }
@@ -1546,7 +2207,7 @@
         const prev = sel.value;
         const names = [...new Set(rows.filter(Array.isArray).map(r => r[2]).filter(Boolean).map(String))]
             .sort((a, b) => a.localeCompare(b));
-        sel.innerHTML = '<option value="all">All users</option>' +
+        sel.innerHTML = `<option value="all">${escapeHTML(t('an.allusers'))}</option>` +
             names.map(n => `<option value="${escapeHTML(n)}">${escapeHTML(n)}</option>`).join('');
         if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
     }
@@ -1567,16 +2228,16 @@
             if (!Array.isArray(r)) return;
             answered++;
             const sid = r[0];
-            const theme = String(r[3] || 'General');
+            const theme = str(r[3]) || 'General';
             const ok = String(r[5]).trim() === String(r[6]).trim();
 
             const s = sessions.get(sid) || { total: 0, correct: 0 };
             s.total++; if (ok) s.correct++;
             sessions.set(sid, s);
 
-            const t = topics.get(theme) || { total: 0, correct: 0 };
-            t.total++; if (ok) t.correct++;
-            topics.set(theme, t);
+            const tp = topics.get(theme) || { total: 0, correct: 0 };
+            tp.total++; if (ok) tp.correct++;
+            topics.set(theme, tp);
         });
 
         const ids = [...sessions.keys()];
@@ -1590,7 +2251,7 @@
         const from = Math.max(0, pcts.length - 30);
         const labels = [], data = [];
         for (let i = from; i < pcts.length; i++) {
-            labels.push('Test ' + (i + 1));
+            labels.push(t('an.testn', { n: i + 1 }));
             data.push(pcts[i]);
         }
         drawChart(labels, data);
@@ -1601,17 +2262,17 @@
 
         $('topic-progress-area').innerHTML = list.length
             ? list.map(it => {
-                const tone = toneOf(it.p);
+                const tone = it.p >= 80 ? 'good' : it.p >= 50 ? 'warn' : 'bad';
                 return `
                 <div class="bar-row">
                     <div class="bar-head">
-                        <span>${escapeHTML(it.name)} <span class="muted small">(${it.c}/${it.n})</span></span>
+                        <span>${escapeHTML(themeLabel(it.name))} <span class="muted small">(${it.c}/${it.n})</span></span>
                         <strong class="tone-${tone}">${it.p}%</strong>
                     </div>
                     <div class="bar-track" aria-hidden="true"><div class="bar-fill tone-${tone}" style="width:${it.p}%"></div></div>
                 </div>`;
             }).join('')
-            : '<p class="muted center">No data yet.</p>';
+            : `<p class="muted center">${escapeHTML(t('an.nodata'))}</p>`;
     }
 
     function chartColors() {
@@ -1639,7 +2300,7 @@
             data: {
                 labels,
                 datasets: [{
-                    label: 'Score (%)',
+                    label: t('an.scorelabel'),
                     data,
                     borderColor: c.line,
                     backgroundColor: c.fill,
@@ -1690,12 +2351,16 @@
     function handleQuizKey(e) {
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-        if (!locked) {
-            const map = { '1': 0, '2': 1, '3': 2, '4': 3, a: 0, b: 1, c: 2, d: 3 };
-            const idx = map[k];
-            if (idx !== undefined && idx < currentOptions.length) {
+        const q = quizSet[currentIdx];
+        if (!answers[currentIdx]) {
+            if (k === 'Enter') {
+                if (pendingIdx !== null) { e.preventDefault(); confirmAnswer(); }
+                return;
+            }
+            const idx = /^[1-4]$/.test(k) ? Number(k) - 1 : q.opts.findIndex(o => o.k.toLowerCase() === k);
+            if (idx >= 0 && idx < q.opts.length) {
                 e.preventDefault();
-                answer(idx);
+                selectOption(idx);
             }
         } else if (k === 'Enter' && !$('feedback').hidden && document.activeElement !== $('btn-next')) {
             e.preventDefault();
@@ -1717,6 +2382,8 @@
        EVENTS & INIT
        ========================================================= */
     function bindEvents() {
+        $('lang-select').addEventListener('change', e => setLang(e.target.value));
+
         $('btn-analytics').addEventListener('click', openAnalytics);
         $('btn-result-analytics').addEventListener('click', openAnalytics);
         $('btn-theme').addEventListener('click', cycleTheme);
@@ -1730,18 +2397,21 @@
             if (e.key === 'Enter') { e.preventDefault(); startTest(); }
         });
 
+        $('source-group').addEventListener('change', onSourceChange);
+
         $('q-count').addEventListener('input', updateTotals);
         $('q-count').addEventListener('change', clampCount);
         document.querySelectorAll('[data-preset]').forEach(b =>
             b.addEventListener('click', () => applyPreset(b.dataset.preset)));
         $('btn-select-all').addEventListener('click', () => setAllTopics(true));
         $('btn-clear').addEventListener('click', () => setAllTopics(false));
-        $('topic-list').addEventListener('change', clampCount);
+        $('topic-list').addEventListener('change', () => { syncTopicChecked(); clampCount(); });
 
         $('options').addEventListener('click', e => {
             const b = e.target.closest('.option');
-            if (b && !b.disabled) answer(Number(b.dataset.idx));
+            if (b && !b.disabled) selectOption(Number(b.dataset.idx));
         });
+        $('btn-confirm').addEventListener('click', confirmAnswer);
         $('btn-next').addEventListener('click', nextQuestion);
 
         $('btn-retake').addEventListener('click', backToStart);
@@ -1766,6 +2436,7 @@
     }
 
     bindEvents();
+    setLang(DEFAULT_LANG);
     applySettings();
     loadDatabase();
     </script>
