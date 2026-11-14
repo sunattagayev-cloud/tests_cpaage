@@ -928,6 +928,15 @@
     const DB_URL  = "https://raw.githubusercontent.com/sunattagayev-cloud/tests_cpaage/refs/heads/main/testbase.json";
     const SECONDS_PER_QUESTION = 240;
     const MIN_QUESTIONS = 5;
+
+    // MOCK test: how many questions of each point value are drawn from the bank.
+    // Score 1 -> 60 questions, Score 2 -> 14 questions, Score 3 -> 4 questions.
+    const MOCK_PLAN = [
+        { score: 1, count: 60 },
+        { score: 2, count: 14 },
+        { score: 3, count: 4 }
+    ];
+    const MOCK_QUESTIONS = MOCK_PLAN.reduce((s, p) => s + p.count, 0);          // 78 questions = 100 points
     const LANGS = ['en', 'uz', 'ru'];
     const DEFAULT_LANG = 'en';
     const THEME_ORDER = ['dark', 'light', 'contrast'];
@@ -971,7 +980,7 @@
             'topics.all': 'Select all',
             'topics.clear': 'Clear',
             'mock.title': 'MOCK test (100 points)',
-            'mock.text': 'The mock test includes all {n} questions from the bank. Each question is weighted by its Score, and the result is scaled to 100 points.',
+            'mock.text': 'A random set of {n} questions is drawn from the bank: {a} worth 1 point, {b} worth 2 points and {c} worth 3 points. Each attempt gets a new mix.',
             'mock.total': 'Questions: {n} · Total points: 100 · Time: {m} min',
             'btn.start': 'Start test',
             'start.prep': 'Preparing your session…',
@@ -979,6 +988,7 @@
             'err.topic': 'Select at least one topic.',
             'err.min': 'Minimum {n} questions required.',
             'err.notenough': 'Not enough questions in the selected topics.',
+            'err.mock': 'The bank does not have enough questions for the MOCK test. Please contact the administrator.',
             'quiz.kbd': 'Keyboard: <kbd>1</kbd>–<kbd>4</kbd> or <kbd>A</kbd>–<kbd>D</kbd> to select · <kbd>Enter</kbd> to confirm / continue',
             'btn.confirm': 'Confirm answer',
             'confirm.hint': 'Select an answer, then confirm it.',
@@ -1098,7 +1108,7 @@
             'topics.all': 'Hammasini tanlash',
             'topics.clear': 'Tozalash',
             'mock.title': 'MOCK test (100 ball)',
-            'mock.text': "MOCK test bazadagi barcha {n} ta savolni o'z ichiga oladi. Har bir savolning og'irligi Score bo'yicha belgilanadi va natija 100 ballik shkalaga keltiriladi.",
+            'mock.text': "Bazadan tasodifiy {n} ta savol olinadi: {a} tasi 1 ballik, {b} tasi 2 ballik va {c} tasi 3 ballik. Har bir urinishda savollar yangi aralashmada beriladi.",
             'mock.total': "Savollar: {n} · Jami ball: 100 · Vaqt: {m} daq.",
             'btn.start': 'Testni boshlash',
             'start.prep': 'Sessiya tayyorlanmoqda…',
@@ -1106,6 +1116,7 @@
             'err.topic': 'Kamida bitta mavzuni tanlang.',
             'err.min': 'Kamida {n} ta savol kerak.',
             'err.notenough': "Tanlangan mavzularda savollar yetarli emas.",
+            'err.mock': "MOCK test uchun bazada savollar yetarli emas. Administratorga murojaat qiling.",
             'quiz.kbd': "Klaviatura: tanlash uchun <kbd>1</kbd>–<kbd>4</kbd> yoki <kbd>A</kbd>–<kbd>D</kbd> · tasdiqlash yoki davom etish uchun <kbd>Enter</kbd>",
             'btn.confirm': 'Javobni tasdiqlash',
             'confirm.hint': "Javobni tanlang, so'ng tasdiqlang.",
@@ -1225,7 +1236,7 @@
             'topics.all': 'Выбрать все',
             'topics.clear': 'Очистить',
             'mock.title': 'MOCK-тест (100 баллов)',
-            'mock.text': 'MOCK-тест включает все {n} вопросов базы. Вес каждого вопроса задаётся полем Score, результат приводится к шкале 100 баллов.',
+            'mock.text': 'Из базы случайным образом выбирается {n} вопросов: {a} по 1 баллу, {b} по 2 балла и {c} по 3 балла. При каждой попытке набор вопросов новый.',
             'mock.total': 'Вопросов: {n} · Всего баллов: 100 · Время: {m} мин',
             'btn.start': 'Начать тест',
             'start.prep': 'Подготовка сессии…',
@@ -1233,6 +1244,7 @@
             'err.topic': 'Выберите хотя бы одну тему.',
             'err.min': 'Нужно минимум {n} вопросов.',
             'err.notenough': 'В выбранных темах недостаточно вопросов.',
+            'err.mock': 'Для MOCK-теста в базе недостаточно вопросов. Обратитесь к администратору.',
             'quiz.kbd': 'Клавиатура: выбор — <kbd>1</kbd>–<kbd>4</kbd> или <kbd>A</kbd>–<kbd>D</kbd> · подтвердить или продолжить — <kbd>Enter</kbd>',
             'btn.confirm': 'Подтвердить ответ',
             'confirm.hint': 'Выберите ответ, затем подтвердите его.',
@@ -1351,7 +1363,6 @@
     let themeNames = {};           // en theme -> {en, uz, ru}
     let sourceNames = {};          // en source -> {en, uz, ru}
     let sourceList = [];           // en source names, in data order
-    let MOCK_TOTAL = 0;            // sum of all Score values (used to scale MOCK to 100)
     let topicChecked = new Set();  // en theme names the user ticked (kept across source changes)
     let quizSet = [];
     let answers = [];              // per question: {key, isCorrect, mode, pts, time} or null
@@ -1432,7 +1443,9 @@
             .join('');
     }
 
-    const ptsOf = q => userData.mock ? (q.score / MOCK_TOTAL * 100) : 1;
+    // MOCK: a question is worth its Score (1, 2 or 3 points), so a full MOCK adds up to 100.
+    // Other tests: every question is worth 1 point.
+    const ptsOf = q => userData.mock ? q.score : 1;
     const themeLabel = en => (themeNames[en] && themeNames[en][lang]) || en;
     const sourceLabel = en => (sourceNames[en] && sourceNames[en][lang]) || en;
     const isMock = () => currentSourceValue() === 'mock';
@@ -1495,6 +1508,23 @@
 
     function poolFor(src) {
         return (src === 'all' || src === 'mock') ? bank : bank.filter(q => q.source.en === src);
+    }
+
+    /* =========================================================
+       MOCK TEST SET
+       For each point value in MOCK_PLAN, a random sample of that
+       many questions is drawn WITHOUT repetition from the bank.
+       60 x 1 + 14 x 2 + 4 x 3 = 100 points in total.
+       Returns null when the bank does not have enough questions.
+       ========================================================= */
+    function buildMockSet() {
+        const picked = [];
+        for (const { score, count } of MOCK_PLAN) {
+            const group = bank.filter(q => q.score === score);
+            if (group.length < count) return null;
+            picked.push(...shuffle(group).slice(0, count));
+        }
+        return shuffle(picked);
     }
 
     /* =========================================================
@@ -1639,7 +1669,6 @@
                 sourceList.push(q.source.en);
             }
         });
-        MOCK_TOTAL = bank.reduce((s, q) => s + q.score, 0);
 
         renderSourceOptions();
         renderTopics();
@@ -1719,10 +1748,16 @@
     }
 
     function renderMockPanel() {
-        $('mock-text').textContent = t('mock.text', { n: bank.length });
+        const countOf = score => MOCK_PLAN.find(p => p.score === score).count;
+        $('mock-text').textContent = t('mock.text', {
+            n: MOCK_QUESTIONS,
+            a: countOf(1),
+            b: countOf(2),
+            c: countOf(3)
+        });
         $('mock-total').textContent = t('mock.total', {
-            n: bank.length,
-            m: Math.round(bank.length * SECONDS_PER_QUESTION / 60)
+            n: MOCK_QUESTIONS,
+            m: Math.round(MOCK_QUESTIONS * SECONDS_PER_QUESTION / 60)
         });
     }
 
@@ -1731,7 +1766,7 @@
         const mock = isMock();
         let total;
         if (mock) {
-            total = bank.length;
+            total = MOCK_QUESTIONS;
             inp.value = total;
             inp.removeAttribute('max');
         } else {
@@ -1793,18 +1828,20 @@
         if (!name) return showFormError('err.name', {}, $('username'));
 
         const mock = isMock();
-        let pool, count;
+        let picked, count;
 
         if (mock) {
-            pool = bank.slice();
-            count = pool.length;
+            picked = buildMockSet();
+            if (!picked) return showFormError('err.mock', {});
+            count = picked.length;
         } else {
             const topics = new Set(selectedTopics());
             count = parseInt($('q-count').value, 10);
             if (!topics.size) return showFormError('err.topic', {}, document.querySelector('.topic-check'));
             if (!Number.isInteger(count) || count < MIN_QUESTIONS) return showFormError('err.min', { n: MIN_QUESTIONS }, $('q-count'));
-            pool = poolFor(currentSourceValue()).filter(q => topics.has(q.theme.en));
+            const pool = poolFor(currentSourceValue()).filter(q => topics.has(q.theme.en));
             if (count > pool.length) return showFormError('err.notenough', {}, $('q-count'));
+            picked = shuffle(pool).slice(0, count);
         }
 
         $('btn-start').disabled = true;
@@ -1814,7 +1851,7 @@
         $('start-msg').hidden = true;
 
         userData = { name, count, mock, testID: `${Date.now()}_${Math.floor(Math.random() * 1000)}` };
-        quizSet = shuffle(pool).slice(0, count);
+        quizSet = picked;
         answers = new Array(count).fill(null);
         pendingIdx = null;
         resultState = null;
