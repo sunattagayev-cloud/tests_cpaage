@@ -40,6 +40,8 @@
             --good: #4ade80;
             --bad: #f87171;
             --warn: #fbbf24;
+            --flag: #f87171;
+            --flag-ink: #1a0606;
             color-scheme: dark;
         }
 
@@ -62,6 +64,8 @@
             --good: #166534;
             --bad: #b91c1c;
             --warn: #92400e;
+            --flag: #b91c1c;
+            --flag-ink: #ffffff;
             --shadow: 0 14px 40px rgba(15, 23, 42, .12);
             color-scheme: light;
         }
@@ -85,6 +89,8 @@
             --good: #00ff88;
             --bad: #ff7070;
             --warn: #ffe600;
+            --flag: #ff7070;
+            --flag-ink: #000000;
             --shadow: none;
             --bw: 2px;
             color-scheme: dark;
@@ -359,6 +365,19 @@
             background: var(--chip-bg); color: var(--chip-text); font-size: .85rem; font-weight: 700; line-height: 1.35;
         }
         .chip-pts { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .chip-return { background: transparent; border: 1px solid var(--flag); color: var(--flag); }
+        .meta-right { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+
+        /* Red flag: "come back to this question" */
+        .flag-btn {
+            display: inline-flex; align-items: center; gap: .45rem;
+            min-height: 2.5rem; padding: .4rem .85rem; border-radius: 12px;
+            border: 2px solid var(--flag); background: transparent; color: var(--flag);
+            font-weight: 700; font-size: .9rem; cursor: pointer;
+        }
+        .flag-btn:hover { background: color-mix(in srgb, var(--flag) 14%, transparent); }
+        .flag-btn[aria-pressed="true"] { background: var(--flag); color: var(--flag-ink); }
+        .stat.flag strong { color: var(--flag); }
         [data-theme="contrast"] .chip { border: 2px solid var(--accent); }
         .counter { font-weight: 800; color: var(--text-2); font-variant-numeric: tabular-nums; }
 
@@ -729,8 +748,14 @@
                         <span class="chip" id="q-source"></span>
                         <span class="chip" id="q-theme"></span>
                         <span class="chip chip-pts" id="q-worth" hidden></span>
+                        <span class="chip chip-return" id="q-return" hidden></span>
                     </div>
-                    <span class="counter notranslate" id="q-counter">1 / 1</span>
+                    <div class="meta-right">
+                        <button type="button" class="flag-btn" id="btn-flag" aria-pressed="false" aria-keyshortcuts="F">
+                            <i class="fas fa-flag" aria-hidden="true"></i> <span></span>
+                        </button>
+                        <span class="counter notranslate" id="q-counter">1 / 1</span>
+                    </div>
                 </div>
 
                 <h2 class="question" id="q-text" tabindex="-1"></h2>
@@ -741,6 +766,9 @@
                     <p class="confirm-hint" id="confirm-hint" data-i18n="confirm.hint">Select an answer, then confirm it.</p>
                     <button type="button" class="btn" id="btn-confirm" disabled>
                         <i class="fas fa-check" aria-hidden="true"></i> <span data-i18n="btn.confirm">Confirm answer</span>
+                    </button>
+                    <button type="button" class="btn btn-outline" id="btn-skip" hidden>
+                        <i class="fas fa-flag" aria-hidden="true"></i> <span data-i18n="btn.skip">Return to this later</span>
                     </button>
                 </div>
 
@@ -789,6 +817,7 @@
                         <div class="stat bad"><strong id="r-wrong" class="notranslate">0</strong><span data-i18n="res.wrong">Incorrect</span></div>
                         <div class="stat"><strong id="r-skipped" class="notranslate">0</strong><span data-i18n="res.skipped">Not answered</span></div>
                         <div class="stat"><strong id="r-time" class="notranslate">00:00</strong><span data-i18n="res.time">Time used</span></div>
+                        <div class="stat flag"><strong id="r-flagged" class="notranslate">0</strong><span data-i18n="res.flagged">Red-flagged questions</span></div>
                     </div>
                 </div>
 
@@ -937,6 +966,9 @@
         { score: 3, count: 4 }
     ];
     const MOCK_QUESTIONS = MOCK_PLAN.reduce((s, p) => s + p.count, 0);          // 78 questions = 100 points
+    // Sources that are not offered as separate choices in the source filter.
+    // Their questions are still part of "All" and MOCK, because those use the whole bank.
+    const HIDDEN_SOURCES = ['Teachers test', 'Self-composed test'];
     const LANGS = ['en', 'uz', 'ru'];
     const DEFAULT_LANG = 'en';
     const THEME_ORDER = ['dark', 'light', 'contrast'];
@@ -989,7 +1021,13 @@
             'err.min': 'Minimum {n} questions required.',
             'err.notenough': 'Not enough questions in the selected topics.',
             'err.mock': 'The bank does not have enough questions for the MOCK test. Please contact the administrator.',
-            'quiz.kbd': 'Keyboard: <kbd>1</kbd>–<kbd>4</kbd> or <kbd>A</kbd>–<kbd>D</kbd> to select · <kbd>Enter</kbd> to confirm / continue',
+            'flag.set': 'Flag for later',
+            'flag.unset': 'Remove flag',
+            'btn.skip': 'Return to this later',
+            'quiz.returning': 'Returned question',
+            'res.flagged': 'Red-flagged questions',
+            'res.flagged.val': '{n} · {p}%',
+            'quiz.kbd': 'Keyboard: <kbd>1</kbd>–<kbd>4</kbd> or <kbd>A</kbd>–<kbd>D</kbd> to select · <kbd>F</kbd> flag · <kbd>Enter</kbd> to confirm / continue',
             'btn.confirm': 'Confirm answer',
             'confirm.hint': 'Select an answer, then confirm it.',
             'tag.selected': 'Selected',
@@ -1117,7 +1155,13 @@
             'err.min': 'Kamida {n} ta savol kerak.',
             'err.notenough': "Tanlangan mavzularda savollar yetarli emas.",
             'err.mock': "MOCK test uchun bazada savollar yetarli emas. Administratorga murojaat qiling.",
-            'quiz.kbd': "Klaviatura: tanlash uchun <kbd>1</kbd>–<kbd>4</kbd> yoki <kbd>A</kbd>–<kbd>D</kbd> · tasdiqlash yoki davom etish uchun <kbd>Enter</kbd>",
+            'flag.set': "Qizil bayroqcha qo'yish",
+            'flag.unset': "Bayroqchani olib tashlash",
+            'btn.skip': "Keyinroq qaytaman",
+            'quiz.returning': "Qaytgan savol",
+            'res.flagged': "Qizil bayroqchali savollar",
+            'res.flagged.val': "{n} ta · {p}%",
+            'quiz.kbd': "Klaviatura: tanlash uchun <kbd>1</kbd>–<kbd>4</kbd> yoki <kbd>A</kbd>–<kbd>D</kbd> · bayroqcha uchun <kbd>F</kbd> · tasdiqlash yoki davom etish uchun <kbd>Enter</kbd>",
             'btn.confirm': 'Javobni tasdiqlash',
             'confirm.hint': "Javobni tanlang, so'ng tasdiqlang.",
             'tag.selected': 'Tanlandi',
@@ -1245,7 +1289,13 @@
             'err.min': 'Нужно минимум {n} вопросов.',
             'err.notenough': 'В выбранных темах недостаточно вопросов.',
             'err.mock': 'Для MOCK-теста в базе недостаточно вопросов. Обратитесь к администратору.',
-            'quiz.kbd': 'Клавиатура: выбор — <kbd>1</kbd>–<kbd>4</kbd> или <kbd>A</kbd>–<kbd>D</kbd> · подтвердить или продолжить — <kbd>Enter</kbd>',
+            'flag.set': 'Поставить красный флажок',
+            'flag.unset': 'Снять флажок',
+            'btn.skip': 'Вернуться к нему позже',
+            'quiz.returning': 'Возвращённый вопрос',
+            'res.flagged': 'Вопросы с красным флажком',
+            'res.flagged.val': '{n} · {p}%',
+            'quiz.kbd': 'Клавиатура: выбор — <kbd>1</kbd>–<kbd>4</kbd> или <kbd>A</kbd>–<kbd>D</kbd> · флажок — <kbd>F</kbd> · подтвердить или продолжить — <kbd>Enter</kbd>',
             'btn.confirm': 'Подтвердить ответ',
             'confirm.hint': 'Выберите ответ, затем подтвердите его.',
             'tag.selected': 'Выбрано',
@@ -1374,6 +1424,13 @@
     let saveFailures = 0, reviewFilter = 'all';
     let resultState = null, formErr = null;
     let rawDashboardData = [], chartInst = null, lastFocus = null;
+
+    // Navigation during a test (question indices refer to quizSet)
+    let flags = [];                // per question: true when the red flag is on
+    let queue = [];                // order in which questions are shown in the first pass
+    let orderPos = 0;              // position of the current question in `queue`
+    let deferred = [];             // red-flagged questions left for later; shown again after the first pass
+    let returningPhase = false;    // true while the deferred questions are being shown
 
     const $ = id => document.getElementById(id);
 
@@ -1689,7 +1746,7 @@
     function renderSourceOptions() {
         const cur = currentSourceValue();
         const opts = [['all', t('source.all')]]
-            .concat(sourceList.map(en => [en, sourceLabel(en)]))
+            .concat(sourceList.filter(en => !HIDDEN_SOURCES.includes(en)).map(en => [en, sourceLabel(en)]))
             .concat([['mock', t('source.mock')]]);
         $('source-group').innerHTML = opts.map(([v, label]) => `
             <label class="seg-opt">
@@ -1853,6 +1910,11 @@
         userData = { name, count, mock, testID: `${Date.now()}_${Math.floor(Math.random() * 1000)}` };
         quizSet = picked;
         answers = new Array(count).fill(null);
+        flags = new Array(count).fill(false);
+        queue = Array.from({ length: count }, (_, i) => i);
+        orderPos = 0;
+        deferred = [];
+        returningPhase = false;
         pendingIdx = null;
         resultState = null;
         saveFailures = 0;
@@ -1873,7 +1935,8 @@
         currentIdx = idx;
         pendingIdx = null;
         questionStart = Date.now();
-        const pct = Math.round(idx / userData.count * 100);
+        const done = answers.filter(Boolean).length;
+        const pct = Math.round(done / userData.count * 100);
         $('progress-fill').style.width = pct + '%';
         $('progress').setAttribute('aria-valuenow', String(pct));
         renderQuestion(false);
@@ -1886,6 +1949,9 @@
         $('q-source').textContent = userData.mock ? t('source.mock') : sourceLabel(q.source.en);
         $('q-theme').textContent = q.theme[lang];
         $('q-counter').textContent = `${currentIdx + 1} / ${userData.count}`;
+        const ret = $('q-return');
+        ret.hidden = !returningPhase;
+        ret.textContent = t('quiz.returning');
 
         const worth = $('q-worth');
         worth.hidden = !userData.mock;
@@ -1907,6 +1973,7 @@
         } else if (pendingIdx !== null) {
             applyPendingMarks();
         }
+        updateFlagUI();
         updateConfirm();
         if (!isRefresh) $('q-text').focus();
     }
@@ -1962,7 +2029,7 @@
         asos.textContent = exp || t('asos.none');
         asos.classList.toggle('muted', !exp);
 
-        const last = currentIdx + 1 >= userData.count;
+        const last = !hasMoreQuestions();
         $('btn-next').innerHTML = last
             ? `${escapeHTML(t('btn.finish'))} <i class="fas fa-flag-checkered" aria-hidden="true"></i>`
             : `${escapeHTML(t('btn.next'))} <i class="fas fa-arrow-right" aria-hidden="true"></i>`;
@@ -1997,6 +2064,8 @@
         $('confirm-bar').hidden = !open;
         $('btn-confirm').disabled = pendingIdx === null;
         $('confirm-hint').hidden = pendingIdx !== null;
+        // A red-flagged, unanswered question can be left for now (only during the first pass)
+        $('btn-skip').hidden = !(open && flags[currentIdx] && !returningPhase);
     }
 
     function confirmAnswer() {
@@ -2036,8 +2105,44 @@
 
     function nextQuestion() {
         if (!quizActive) return;
-        if (currentIdx + 1 < userData.count) loadQ(currentIdx + 1);
-        else finishTest('complete');
+        if (orderPos + 1 < queue.length) {
+            orderPos++;
+            loadQ(queue[orderPos]);
+            return;
+        }
+        if (deferred.length) {
+            // First pass is over: show the red-flagged questions that were left for later
+            queue = deferred;
+            deferred = [];
+            orderPos = 0;
+            returningPhase = true;
+            loadQ(queue[0]);
+            return;
+        }
+        finishTest('complete');
+    }
+
+    const hasMoreQuestions = () => orderPos + 1 < queue.length || deferred.length > 0;
+
+    // A red-flagged question that is still unanswered is left for now and comes back after the others
+    function postponeQuestion() {
+        if (!quizActive || returningPhase || answers[currentIdx] || !flags[currentIdx]) return;
+        deferred.push(currentIdx);
+        nextQuestion();
+    }
+
+    function toggleFlag() {
+        if (!quizActive) return;
+        flags[currentIdx] = !flags[currentIdx];
+        updateFlagUI();
+        updateConfirm();
+    }
+
+    function updateFlagUI() {
+        const on = !!flags[currentIdx];
+        const btn = $('btn-flag');
+        btn.setAttribute('aria-pressed', String(on));
+        btn.querySelector('span').textContent = t(on ? 'flag.unset' : 'flag.set');
     }
 
     function saveAnswerImmediately(payload) {
@@ -2102,6 +2207,7 @@
         const answered = answers.filter(Boolean).length;
         const correct = answers.filter(a => a && a.isCorrect).length;
         const earned = answers.reduce((s, a) => s + (a && a.isCorrect ? a.pts : 0), 0);
+        const flagged = flags.filter(Boolean).length;
 
         resultState = {
             reason,
@@ -2110,6 +2216,8 @@
             correct,
             earned,
             percent: total ? Math.round(correct / total * 100) : 0,
+            flagged,
+            flagPct: total ? Math.round(flagged / total * 1000) / 10 : 0,
             usedSec: Math.max(0, totalTime - Math.max(0, timeLeft)),
             saveFail: saveFailures > 0
         };
@@ -2136,6 +2244,7 @@
         $('r-wrong').textContent = r.answered - r.correct;
         $('r-skipped').textContent = r.total - r.answered;
         $('r-time').textContent = fmtTime(r.usedSec);
+        $('r-flagged').textContent = t('res.flagged.val', { n: r.flagged, p: r.flagPct });
         $('result-note').hidden = r.reason !== 'timeout';
         $('save-warning').hidden = !r.saveFail;
 
@@ -2389,6 +2498,7 @@
         if (e.ctrlKey || e.metaKey || e.altKey) return;
         const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
         const q = quizSet[currentIdx];
+        if (k === 'f') { e.preventDefault(); toggleFlag(); return; }
         if (!answers[currentIdx]) {
             if (k === 'Enter') {
                 if (pendingIdx !== null) { e.preventDefault(); confirmAnswer(); }
@@ -2450,6 +2560,8 @@
         });
         $('btn-confirm').addEventListener('click', confirmAnswer);
         $('btn-next').addEventListener('click', nextQuestion);
+        $('btn-flag').addEventListener('click', toggleFlag);
+        $('btn-skip').addEventListener('click', postponeQuestion);
 
         $('btn-retake').addEventListener('click', backToStart);
         document.querySelectorAll('[data-review-filter]').forEach(b =>
